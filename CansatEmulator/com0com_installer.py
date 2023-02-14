@@ -46,7 +46,7 @@ def get_virtual_pair_conf():
     except:
         return None
 
-    return cnc, com
+    return (cnc, com)
 
 def install_com0com():
     os.chdir(SCRIPT_DIR)
@@ -66,15 +66,18 @@ def install_com0com():
     os.chdir(COM0COM_PATH)
 
     # Executes "setupc.exe --silent install PortName=POSEIDON69 PortName=COM#"
-    process = run( [SETUPC_PATH, "--silent", "install", "PortName=POSEIDON69", "PortName=COM#"], stdout=PIPE )
+    process = run( [SETUPC_PATH, "--silent", "install", "PortName=POSEIDON69", "PortName=COM#,EmuBR=yes"], stdout=PIPE )
+    print(">", " ".join([SETUPC_PATH, "--silent", "install", "PortName=POSEIDON69", "PortName=COM#,EmuBR=yes"]))
     print(process.stdout.decode(ENCODING))
 
     # Executes "pnputil.exe /add-driver comport.inf /install"
     process = run( ["pnputil.exe", "/add-driver", COMPORT_INF_PATH, "/install"], stdout=PIPE )
+    print(">", " ".join(["pnputil.exe", "/add-driver", COMPORT_INF_PATH, "/install"]))
     print(process.stdout.decode(ENCODING))
 
     # Gets the port pair names
     process = run( [SETUPC_PATH, "--silent", "list"], stdout=PIPE )
+    print(">", " ".join([SETUPC_PATH, "--silent", "list"]))
     print(process.stdout.decode(ENCODING))
     cnc, com = _get_com_pair_list(process.stdout.decode(ENCODING))
 
@@ -108,6 +111,7 @@ def uninstall_com0com():
     # Run com0com uninstall command
     # Executes "setupc.exe --silent uninstall"
     process = run( [SETUPC_PATH, "--silent", "uninstall"], stdout=PIPE )
+    print(">", " ".join([SETUPC_PATH, "--silent", "uninstall"]))
     print(process.stdout.decode(ENCODING))
 
     os.chdir(SCRIPT_DIR)

@@ -1,5 +1,7 @@
 .vscode
 CansatEmulator/com0com_akeo
+com0com_conf
+poseidon_conf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
