@@ -56,7 +56,37 @@ def main():
     configuration_wizard(poseidon_config)
     poseidon.initialize_emulator(cnc, com, poseidon_config)
 
+def uninstall():
+    print("Hi!👋")
+    print("Checking Administrative privileges...")
+    if _is_admin():
+        print("This process is running in privileged mode. Continuing...")
+        print("⚠️Warning: You're about to remove com0com driver and Poseidon configuration file. Press enter to remove...")
+        input()
+        if uninstall_com0com():
+            print("com0com has been uninstalled successfully.")
+        
+        poseidon_config = get_config()
+        if poseidon_config is not None:
+            poseidon_config.config_path.unlink()
+            print("Poseidon configuration has been removed successfully")
+        else:
+            print("Poseidon configuration file was not found")
+    else:
+        print("⚠️This process is currently running in user mode, administrative privilege is required")
+        print("Press enter to request UAC Process elevation...")
+        input()
+        _elevate()
+        exit(0)
+
 if __name__ == "__main__":
+    try:
+        if sys.argv[1].lower() == "uninstall":
+            uninstall()
+            input("Press enter to exit...")
+            exit(0)
+    except: pass
+
     if check_first_run():
         first_run_procedure()
     else:

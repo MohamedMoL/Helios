@@ -20,21 +20,21 @@ class NotImplementedException(Exception):
 class SensorData():
     def __init__(self):
         global packet_count
-        self.ID = "herpes"
+        self.ID = "hermes"
         self.PacketID = packet_count
         packet_count += 1
-        self.Altitude = uniform(0, 1000)
-        self.Pressure = uniform(1000000, 10000000)
-        self.Temperature = uniform(-20, 85)
-        self.RotationX = uniform(0, 360)
-        self.RotationY = uniform(0, 360)
-        self.RotationZ = uniform(0, 360)
-        self.AccelerationX = uniform(0, 4)
-        self.AccelerationY = uniform(0, 4)
-        self.AccelerationZ = uniform(0, 4)
+        self.Altitude = round(uniform(0, 1000), 2)
+        self.Pressure = round(uniform(1000000, 10000000), 2)
+        self.Temperature = round(uniform(-20, 85), 2)
+        self.RotationX = round(uniform(0, 360), 2)
+        self.RotationY = round(uniform(0, 360), 2)
+        self.RotationZ = round(uniform(0, 360), 2)
+        self.AccelerationX = round(uniform(0, 4), 2)
+        self.AccelerationY = round(uniform(0, 4), 2)
+        self.AccelerationZ = round(uniform(0, 4), 2)
         self.Latitude = uniform(-90, 90)
         self.Longitude = uniform(-180, 180)
-        self.UVIndex = uniform(0, 14)
+        self.UVIndex = round(uniform(0, 14), 2)
 
     def construct_binary_packet(self) -> bytes:
         raise NotImplementedException("Construct binary packet not implemented")
@@ -77,6 +77,12 @@ def initialize_emulator(cnc_interface : str = CNC_INTERFACE, com_interface : str
     # Actual loop
     try:
         while True:
+            if config.ecc_mode_enabled:
+                raise NotImplementedException("(Error Correction Code not implemented)")
+            if config.encryption_enabled:
+                raise NotImplementedException("(Encryption not implemented)")
+            if config.expect_ack:
+                raise NotImplementedException("(Acknowledgement not implemented)")
             current_sensor_collection = SensorData()
             with serial.Serial("\\\\.\\" + CNC_INTERFACE, 9600, timeout=1) as cnc:
                 send_packet(current_sensor_collection, cnc, config.output_mode, config.ecc_mode_enabled, config.expect_ack, config.encryption_enabled, config.encryption_keys)
