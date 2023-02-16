@@ -1,18 +1,28 @@
-info = {"ID": 0,
+import time
+import serial
+info = {"team_name": "",
+        "ID": 0,
         "altitude": 0,
         "pressure": 0,
-        "rotation": [0, 0, 0],  # X, Y, Z
-        "acceleration": [0, 0, 0],  # X, Y, Z
+        "rotationX": 0,
+        "rotationY": 0,
+        "rotationZ": 0,
+        "accelerationX": 0,
+        "accelerationY": 0,
+        "accelerationZ": 0,
         "latitude": 0,
         "length": 0,
         "UV_index": 0}
 
 
 def update_data(new_data):
-    info["ID"] += 1
-    for data, key in zip(new_data, list(info.keys())[1:]):
+    for data, key in zip(new_data, list(info.keys())):
         info[key] = data
     print(info)
 
 
-update_data([100, 200, [2, 4, 0], [20, 10, 8], 2000, 6000, 2])
+arduino = serial.Serial("COM3", 9600)
+time.sleep(2)
+update_data(arduino.readline().decode("utf-8").split(","))
+arduino.write(b'9')
+arduino.close()
