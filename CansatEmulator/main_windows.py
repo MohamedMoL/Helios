@@ -80,12 +80,17 @@ def uninstall():
         exit(0)
 
 if __name__ == "__main__":
+    uninstall_flag = False
     try:
         if sys.argv[1].lower() == "uninstall":
+            uninstall_flag = True
             uninstall()
             input("Press enter to exit...")
             exit(0)
     except: pass
+
+    if uninstall_flag:
+        exit(0)
 
     if check_first_run():
         first_run_procedure()

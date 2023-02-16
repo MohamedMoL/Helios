@@ -1,12 +1,12 @@
 import os
 from subprocess import PIPE, run
 from zipfile import ZipFile
-from locale import getencoding
+from locale import getpreferredencoding
 from configparser import ConfigParser
 import ctypes, sys
 import shutil
 
-ENCODING = getencoding()
+ENCODING = getpreferredencoding()
 SCRIPT_DIR = os.path.realpath(os.path.dirname(__file__))
 COM0COM_PATH = os.path.join(SCRIPT_DIR, "com0com_akeo")
 SETUPC_PATH = os.path.join(SCRIPT_DIR, "com0com_akeo", "setupc.exe")
