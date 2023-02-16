@@ -157,27 +157,32 @@ def configuration_wizard(config : EmulatorConfiguration):
         if key == Key.enter:
             return False
         else:
-            if key.char == "v":
-                if config.output_mode == "text":
-                    config.output_mode = "binary"
+            try:
+                if key.char == "v":
+                    if config.output_mode == "text":
+                        config.output_mode = "binary"
+                    else:
+                        config.output_mode = "text"
+                    print("Changed output mode")
+                elif key.char == "b":
+                    if config.ecc_mode_enabled:
+                        config.ecc_mode_enabled = False
+                    else:
+                        config.ecc_mode_enabled = True
+                elif key.char == "n":
+                    if config.expect_ack:
+                        config.expect_ack = False
+                    else:
+                        config.expect_ack = True
+                elif key.char == "m":
+                    if config.encryption_enabled:
+                        config.encryption_enabled = False
+                    else:
+                        config.encryption_enabled = True
                 else:
-                    config.output_mode = "text"
-                print("Changed output mode")
-            if key.char == "b":
-                if config.ecc_mode_enabled:
-                    config.ecc_mode_enabled = False
-                else:
-                    config.ecc_mode_enabled = True
-            if key.char == "n":
-                if config.expect_ack:
-                    config.expect_ack = False
-                else:
-                    config.expect_ack = True
-            if key.char == "m":
-                if config.encryption_enabled:
-                    config.encryption_enabled = False
-                else:
-                    config.encryption_enabled = True
+                    pass
+            except:
+                pass
             _wizard_print_configuration(config)
     
     _wizard_print_configuration(config)

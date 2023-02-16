@@ -1,3 +1,6 @@
+# Note that the implementation of everything in this file is kinda half assed
+# Everything in here will be subject of breaking changes in the future.
+
 # poseidon.py (Serial COM path) (mode)
 
 # Poseidon --> [POSEIDON69 = COM#] <-- Ground Processing Application (Windows)
@@ -5,8 +8,28 @@
 
 from poseidon_config import EmulatorConfiguration, get_config
 from time import sleep
-from random import randint, uniform, random
+from random import randint, uniform, random, choice
 import serial
+
+ASCII_ART = \
+'''
+  |      ,sss.  
+| | |    $^,^$
+|_|_|   _/$$$\_
+  |   /'  ?$?  `.
+  ;,-' /\ ,, /. |
+  '-./' ;    ;: |
+  |     |`  '|`,;
+~~~~~~~~~~~~~~~~~~~~
+'''
+
+try:
+    motdfile = open("motdlist", "r")
+    motd_list = motdfile.read().split('\n')
+    MOTD = choice(motd_list)
+except:
+    MOTD = ""
+    pass
 
 EMULATOR_CONFIG = get_config()
 
@@ -66,6 +89,8 @@ def send_packet(sensor_data_collection: SensorData,
 
 def initialize_emulator(cnc_interface : str = CNC_INTERFACE, com_interface : str = None, config : EmulatorConfiguration = EMULATOR_CONFIG):
     global CNC_INTERFACE
+    print(ASCII_ART)
+    print("MOTD:", MOTD)
     print("Poseidon Engine started")
     print("Virtual COM Port:", cnc_interface)
     if com_interface is not None and type(com_interface) is str:
