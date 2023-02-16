@@ -9,6 +9,7 @@
 from poseidon_config import EmulatorConfiguration, get_config
 from time import sleep
 from random import randint, uniform, random, choice
+from pathlib import Path
 import serial
 
 ASCII_ART = \
@@ -24,7 +25,8 @@ ASCII_ART = \
 '''
 
 try:
-    motdfile = open("motdlist", "r")
+    motd_path = (Path(__file__).parent / "motdlist")
+    motdfile = open(str(motd_path), "r")
     motd_list = motdfile.read().split('\n')
     MOTD = choice(motd_list)
 except:
