@@ -41,6 +41,20 @@ The software onboard will collect the following data:
 
 # Text
 
+## Packet Payload
+
 The plain data MUST be an **ASCII** encoded string, an entry of CSV MUST display the data entries in the following order:
 
-`ID, Time, Altitude, Pressure, Temperature, RotationX, RotationY, RotationZ, AccelerationX, AccelerationY, AccelerationZ, Latitude, Longitude, UVIndex`
+`ID,Time,Altitude,Pressure,Temperature,RotationX,RotationY,RotationZ,AccelerationX,AccelerationY,AccelerationZ,Latitude,Longitude,UVIndex`
+
+## Payload Encryption
+
+In text mode, the packets cannot be encrypted, this mode only exists for debugging purposes.
+
+## Error Correction
+
+Reed-Solomon error correction codes will be added to the to the end of the plain text payload
+
+## Packet encapsulation and construction
+
+`[Text Payload][Reed-Solomon ECC of Text Payload][CRLF]`
