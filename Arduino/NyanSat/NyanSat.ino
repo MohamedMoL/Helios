@@ -1,15 +1,11 @@
 /* 
-Bilingual Project, comments and documentation would be in both languages / Proyecto bilingüe, comentarios y documentaciones estarán disponibles en ambos lenguajes
-
 All helper functions will be merged into (this) one Arduino Sketch file, beucase I can't figure out a way to have helper functions on separate files
 Maybe I'll separate them later.
-Todos los funciones secundarios estarán dentro de este archivo de Arduino Sketch, porque no encuentro ninguna forma se separarlos en archivos diferentes
-Lo dejaré como una tarea para el futuro.
 
-Project/Proyecto Hermes (Internal Tracker: NyanSat)
+Project Hermes (Internal Tracker: NyanSat)
 */
 
-// Importing libraries / Importación de librerías
+// Importing libraries
 #include "DataModels.h"
 #include <Adafruit_BMP280.h>
 #include <Adafruit_SI1145.h>

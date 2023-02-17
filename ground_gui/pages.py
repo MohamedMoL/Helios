@@ -7,11 +7,11 @@ matplotlib.use('TkAgg')
 
 
 class window(tk.Tk):
-    def __init__(self):
+    def __init__(self, team_name):
         super().__init__()
 
         container = tk.Frame(self)  # Will contain all pages
-        self.wm_title("Hermes")  # Set window title
+        self.wm_title(team_name)  # Set window title
 
         self.state('zoomed')  # Make the window use full screen
 
@@ -62,22 +62,52 @@ class PageOne(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
 
-        self.variable_data = tk.IntVar(value=2)
-        changeable = tk.Label(self, textvariable=self.variable_data)
-        changeable.pack(pady=10, padx=10)
+        # ------------- Cansat data instances ------------- #
+        self.id = tk.IntVar(value=0)
+        self.temperature = tk.DoubleVar(value=0)
+        self.altitude = tk.DoubleVar(value=0)
+        self.pressure = tk.DoubleVar(value=0)
+        self.accelerationX = tk.DoubleVar(value=0)
+        self.accelerationY = tk.DoubleVar(value=0)
+        self.accelerationZ = tk.DoubleVar(value=0)
+        self.rotationX = tk.DoubleVar(value=0)
+        self.rotationY = tk.DoubleVar(value=0)
+        self.rotationZ = tk.DoubleVar(value=0)
+        self.latitude = tk.DoubleVar(value=0)
+        self.length = tk.DoubleVar(value=0)
+        self.uv_index = tk.DoubleVar(value=0)
+
+        id_label = tk.Label(self, text="ID")
+        id_label.grid(row=1, column=0)
+        id_data = tk.Label(self, textvariable=self.id)
+        id_data.grid(row=1, column=1)
+
+        temperature_label = tk.Label(self, text="Temperature")
+        temperature_label.grid(row=2, column=0)
+        temperature_data = tk.Label(self, textvariable=self.temperature)
+        temperature_data.grid(row=2, column=1)
+
+        altitude_label = tk.Label(self, text="Altitude")
+        altitude_label.grid(row=3, column=0)
+        altitude_data = tk.Label(self, textvariable=self.altitude)
+        altitude_data.grid(row=3, column=1)
+
+        pressure_label = tk.Label(self, text="Pressure")
+        pressure_label.grid(row=4, column=0)
+        pressure_data = tk.Label(self, textvariable=self.pressure)
+        pressure_data.grid(row=4, column=1)
+
+        accelerationX_label = tk.Label(self, text="Acceleration X")
+        accelerationX_label.grid(row=5, column=0)
+        accelerationX_data = tk.Label(self, textvariable=self.accelerationX)
+        accelerationX_data.grid(row=5, column=1) 
 
         label = tk.Label(self, text="Page One!!!")
-        label.pack(pady=10, padx=10)
+        label.grid(row=6, column=0)
 
         button1 = tk.Button(self, text="Back to Home",
                             command=lambda: controller.show_frame(Home))
-        button1.pack()
-        button3 = tk.Button(self, text="Change the data",
-                            command=self.update_data)
-        button3.pack()
-
-    def update_data(self):
-        self.variable_data.set(random.randint(0, 100))
+        button1.grid(row=7, column=0)
 
 
 class PageThree(tk.Frame):

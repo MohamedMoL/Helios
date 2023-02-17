@@ -4,6 +4,7 @@ info = {"team_name": "",
         "ID": 0,
         "altitude": 0,
         "pressure": 0,
+        "temperature": 0,
         "rotationX": 0,
         "rotationY": 0,
         "rotationZ": 0,
@@ -14,15 +15,17 @@ info = {"team_name": "",
         "length": 0,
         "UV_index": 0}
 
-
-def update_data(new_data):
-    for data, key in zip(new_data, list(info.keys())):
+def arduino_read_data():
+    arduino = serial.Serial("COM5", 9600)
+    time.sleep(2)
+    new_info = arduino.readline().decode("utf-8").strip().split(",")
+    for data, key in zip(new_info, list(info.keys())):
         info[key] = data
-    print(info)
+    arduino.write(b'9')
+    arduino.close()
 
+x = 0
 
-arduino = serial.Serial("COM3", 9600)
-time.sleep(2)
-update_data(arduino.readline().decode("utf-8").split(","))
-arduino.write(b'9')
-arduino.close()
+while x <= 10:
+    arduino_read_data()
+    x += 1
