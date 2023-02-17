@@ -1,3 +1,5 @@
+import serial
+import time
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
@@ -62,52 +64,128 @@ class PageOne(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
 
-        # ------------- Cansat data instances ------------- #
+        self.infinite_loop = True
+
+        # ------------- ID value + label ------------- #
         self.id = tk.IntVar(value=0)
+        tk.Label(self, text="ID").grid(row=0, column=0)
+        tk.Label(self, textvariable=self.id).grid(
+            row=0, column=1, padx=10, pady=10)
+
+        # ------------- Temperature value + label ------------- #
         self.temperature = tk.DoubleVar(value=0)
+        tk.Label(self, text="Temperature").grid(row=1, column=0)
+        tk.Label(self, textvariable=self.temperature).grid(
+            row=1, column=1, padx=10, pady=10)
+
+        # ------------- Altitude value + label ------------- #
         self.altitude = tk.DoubleVar(value=0)
+        tk.Label(self, text="Altitude").grid(row=2, column=0)
+        tk.Label(self, textvariable=self.altitude).grid(
+            row=2, column=1, padx=10, pady=10)
+
+        # ------------- Pressure value + label ------------- #
         self.pressure = tk.DoubleVar(value=0)
+        tk.Label(self, text="Pressure").grid(row=3, column=0)
+        tk.Label(self, textvariable=self.pressure).grid(
+            row=3, column=1, padx=10, pady=10)
+
+        # ------------- AccelerationX value + label ------------- #
         self.accelerationX = tk.DoubleVar(value=0)
+        tk.Label(self, text="AccelerationX").grid(row=4, column=0)
+        tk.Label(self, textvariable=self.accelerationX).grid(
+            row=4, column=1, padx=10, pady=10)
+
+        # ------------- AccelerationY value + label ------------- #
         self.accelerationY = tk.DoubleVar(value=0)
+        tk.Label(self, text="AccelerationY").grid(row=0, column=2)
+        tk.Label(self, textvariable=self.accelerationY).grid(
+            row=0, column=3, padx=10, pady=10)
+
+        # ------------- AccelerationZ value + label ------------- #
         self.accelerationZ = tk.DoubleVar(value=0)
+        tk.Label(self, text="AccelerationZ").grid(row=1, column=2)
+        tk.Label(self, textvariable=self.accelerationZ).grid(
+            row=1, column=3, padx=10, pady=10)
+
+        # ------------- RotationX value + label ------------- #
         self.rotationX = tk.DoubleVar(value=0)
+        tk.Label(self, text="RotationX").grid(row=2, column=2)
+        tk.Label(self, textvariable=self.rotationX).grid(
+            row=2, column=3, padx=10, pady=10)
+
+        # ------------- RotationY value + label ------------- #
         self.rotationY = tk.DoubleVar(value=0)
+        tk.Label(self, text="RotationY").grid(row=3, column=2)
+        tk.Label(self, textvariable=self.rotationY).grid(
+            row=3, column=3, padx=10, pady=10)
+
+        # ------------- RotationZ value + label ------------- #
         self.rotationZ = tk.DoubleVar(value=0)
+        tk.Label(self, text="RotationZ").grid(row=4, column=2)
+        tk.Label(self, textvariable=self.rotationZ).grid(
+            row=4, column=3, padx=10, pady=10)
+
+        # ------------- Latitude value + label ------------- #
         self.latitude = tk.DoubleVar(value=0)
+        tk.Label(self, text="Latitude").grid(row=5, column=2)
+        tk.Label(self, textvariable=self.latitude).grid(
+            row=5, column=3, padx=10, pady=10)
+
+        # ------------- Length value + label ------------- #
         self.length = tk.DoubleVar(value=0)
+        tk.Label(self, text="Length").grid(row=0, column=4)
+        tk.Label(self, textvariable=self.length).grid(
+            row=0, column=5, padx=10, pady=10)
+
+        # ------------- UV Index value + label ------------- #
         self.uv_index = tk.DoubleVar(value=0)
-
-        id_label = tk.Label(self, text="ID")
-        id_label.grid(row=1, column=0)
-        id_data = tk.Label(self, textvariable=self.id)
-        id_data.grid(row=1, column=1)
-
-        temperature_label = tk.Label(self, text="Temperature")
-        temperature_label.grid(row=2, column=0)
-        temperature_data = tk.Label(self, textvariable=self.temperature)
-        temperature_data.grid(row=2, column=1)
-
-        altitude_label = tk.Label(self, text="Altitude")
-        altitude_label.grid(row=3, column=0)
-        altitude_data = tk.Label(self, textvariable=self.altitude)
-        altitude_data.grid(row=3, column=1)
-
-        pressure_label = tk.Label(self, text="Pressure")
-        pressure_label.grid(row=4, column=0)
-        pressure_data = tk.Label(self, textvariable=self.pressure)
-        pressure_data.grid(row=4, column=1)
-
-        accelerationX_label = tk.Label(self, text="Acceleration X")
-        accelerationX_label.grid(row=5, column=0)
-        accelerationX_data = tk.Label(self, textvariable=self.accelerationX)
-        accelerationX_data.grid(row=5, column=1) 
+        tk.Label(self, text="UV Index").grid(row=1, column=4)
+        tk.Label(self, textvariable=self.uv_index).grid(
+            row=1, column=5, padx=10, pady=10)
 
         label = tk.Label(self, text="Page One!!!")
-        label.grid(row=6, column=0)
+        label.grid(row=7, column=7)
 
         button1 = tk.Button(self, text="Back to Home",
                             command=lambda: controller.show_frame(Home))
         button1.grid(row=7, column=0)
+
+        start_loop_button = tk.Button(self, text="Start",
+                                      command=lambda: self.update_data_cansat())
+        start_loop_button.grid(row=7, column=1)
+
+        stop_button = tk.Button(self, text="Stop",
+                                command=lambda: self.stop_loop())
+        stop_button.grid(row=7, column=2)
+
+    def update_data_cansat(self):
+        arduino = serial.Serial("COM3", 9600)
+        if self.infinite_loop == True:
+            # start = time.time()
+            new_info = arduino.readline().decode("utf-8").strip().split(",")
+            arduino.write(b'9')
+            self.id.set(new_info[1])
+            self.temperature.set(new_info[2])
+            self.altitude.set(new_info[3])
+            self.pressure.set(new_info[4])
+            self.accelerationX.set(new_info[5])
+            self.accelerationY.set(new_info[6])
+            self.accelerationZ.set(new_info[7])
+            self.rotationX.set(new_info[8])
+            self.rotationY.set(new_info[9])
+            self.rotationZ.set(new_info[10])
+            self.latitude.set(new_info[11])
+            self.length.set(new_info[12])
+            self.uv_index.set(new_info[13])
+            # end = time.time()
+            # print("Esto tarda " + str(end - start))
+            self.after(1000, self.update_data_cansat)
+        else:
+            arduino.close()
+
+    def stop_loop(self):
+        self.infinite_loop = False
 
 
 class PageThree(tk.Frame):
@@ -141,7 +219,7 @@ class PageThree(tk.Frame):
         plot1.plot(self.plot_data)
 
         canvas = FigureCanvasTkAgg(fig, self)
-        canvas.get_tk_widget().pack()
+        canvas.get_tk_widget().pack(pady=20)
         canvas.draw()
 
         plotbutton = tk.Button(
