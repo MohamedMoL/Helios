@@ -58,3 +58,6 @@ Reed-Solomon error correction codes will be added to the to the end of the plain
 ## Packet encapsulation and construction
 
 `[Text Payload][Reed-Solomon ECC of Text Payload][CRLF]`
+
+# Binary
+

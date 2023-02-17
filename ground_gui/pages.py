@@ -5,6 +5,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import matplotlib
 import random
+import threading
 matplotlib.use('TkAgg')
 
 
@@ -152,7 +153,7 @@ class PageOne(tk.Frame):
         button1.grid(row=7, column=0)
 
         start_loop_button = tk.Button(self, text="Start",
-                                      command=lambda: self.update_data_cansat())
+                                      command=lambda: self.start_loop())
         start_loop_button.grid(row=7, column=1)
 
         stop_button = tk.Button(self, text="Stop",
@@ -160,33 +161,45 @@ class PageOne(tk.Frame):
         stop_button.grid(row=7, column=2)
 
     def update_data_cansat(self):
-        arduino = serial.Serial("COM3", 9600)
-        if self.infinite_loop == True:
-            # start = time.time()
-            new_info = arduino.readline().decode("utf-8").strip().split(",")
+        print("Started Receiver Thread")
+        arduino = serial.Serial("COM5", 9600, timeout=0.01)
+        while self.infinite_loop == True:
+            start = time.perf_counter()
+            new_info = arduino.readline().decode("utf-8").strip().split(",") # This will now timeout after 0.01s
             arduino.write(b'9')
-            self.id.set(new_info[1])
-            self.temperature.set(new_info[2])
-            self.altitude.set(new_info[3])
-            self.pressure.set(new_info[4])
-            self.rotationX.set(new_info[5])
-            self.rotationY.set(new_info[6])
-            self.rotationZ.set(new_info[7])
-            self.accelerationX.set(new_info[8])
-            self.accelerationY.set(new_info[9])
-            self.accelerationZ.set(new_info[10])
-            self.latitude.set(new_info[11])
-            self.length.set(new_info[12])
-            self.uv_index.set(new_info[13])
-            # end = time.time()
-            # print("Esto tarda " + str(end - start))
-            self.after(1000, self.update_data_cansat)
-        else:
-            arduino.close()
+            if len(new_info) == 14: # If new info is received
+                self.id.set(new_info[1])
+                self.altitude.set(new_info[2])
+                self.pressure.set(new_info[3])
+                self.temperature.set(new_info[4])
+                self.rotationX.set(new_info[5])
+                self.rotationY.set(new_info[6])
+                self.rotationZ.set(new_info[7])
+                self.accelerationX.set(new_info[8])
+                self.accelerationY.set(new_info[9])
+                self.accelerationZ.set(new_info[10])
+                self.latitude.set(new_info[11])
+                self.length.set(new_info[12])
+                self.uv_index.set(new_info[13])
+            end = time.perf_counter()
+            #print("Esto tarda " + str(end - start))
+            #self.after(1000, self.update_data_cansat) # If this is a loop, and the loop depends on external
+            # flags to run, we can toggle the loop just by changing the self.infinite_loop flag, really good idea  
+            # By changing the if statement to a while statement, we no longer need self.after(), the loop and the
+            # thread will take the job
+ 
+        arduino.close()
+        print("Terminated Receiver Thread")
+        return
 
     def stop_loop(self):
         self.infinite_loop = False
+        #self._update_thread.join() # This will cause self.id.set(new_info[1]) to hang the process
 
+    def start_loop(self):
+        self.infinite_loop = True
+        self._update_thread = threading.Thread(target=self.update_data_cansat)
+        self._update_thread.start()
 
 class PageThree(tk.Frame):
 
