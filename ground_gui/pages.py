@@ -3,14 +3,18 @@ import time
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
+#from matplotlib.figure import Figure
 import matplotlib
 import threading
 matplotlib.use('TkAgg')
-
+from ctypes import windll
+windll.shcore.SetProcessDpiAwareness(1) # https://stackoverflow.com/questions/41315873/attempting-to-resolve-blurred-tkinter-text-scaling-on-windows-10-high-dpi-disp
+# WINDOWS ONLY
 
 class window(tk.Tk):
     def __init__(self, team_name):
         super().__init__()
+        self.call('tk', 'scaling', 1.25)
 
         container = tk.Frame(self)  # Will contain all pages
         self.wm_title(team_name)  # Set window title
@@ -173,7 +177,7 @@ class PageOne(tk.Frame):
 
     def update_data_cansat(self):
         # print("Started Receiver Thread")
-        arduino = serial.Serial("COM3", 9600, timeout=0.01)
+        arduino = serial.Serial("COM5", 9600, timeout=0.01)
         while self.infinite_loop == True:
             start = time.perf_counter()
             # This will now timeout after 0.01s
@@ -223,6 +227,7 @@ class PageOne(tk.Frame):
 
     def createWidgets(self):
 
+        #temp_press_time_fig = Figure(figsize=(8, 8))
         temp_press_time_fig = plt.figure(figsize=(8, 8))
 
         # adding the subplot
