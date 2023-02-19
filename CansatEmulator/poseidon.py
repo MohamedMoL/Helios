@@ -13,7 +13,7 @@ from pathlib import Path
 import serial
 
 ASCII_ART = \
-'''
+    '''
   |      ,sss.  
 | | |    $^,^$
 |_|_|   _/$$$\_
@@ -39,13 +39,15 @@ CNC_INTERFACE = "\\\\.\\POSEIDON69"
 
 packet_count = 0
 
+
 class NotImplementedException(Exception):
     pass
+
 
 class SensorData():
     def __init__(self):
         global packet_count
-        self.ID = "hermes"
+        self.ID = "Helios"
         self.PacketID = packet_count
         packet_count += 1
         self.Altitude = round(uniform(0, 1000), 2)
@@ -62,7 +64,8 @@ class SensorData():
         self.UVIndex = round(uniform(0, 14), 2)
 
     def construct_binary_packet(self) -> bytes:
-        raise NotImplementedException("Construct binary packet not implemented")
+        raise NotImplementedException(
+            "Construct binary packet not implemented")
 
     def construct_text_packet(self) -> bytes:
         array = []
@@ -74,10 +77,11 @@ class SensorData():
         packet_bytes = packet_str.encode("ASCII")
         return packet_bytes
 
+
 def send_packet(sensor_data_collection: SensorData,
                 serial_interface: serial.Serial,
                 output_mode: str,
-                ecc : bool,
+                ecc: bool,
                 ack: bool,
                 encrypted: bool,
                 key: str = None):
@@ -89,7 +93,8 @@ def send_packet(sensor_data_collection: SensorData,
     serial_interface.write(data)
     print(data.decode("ASCII"))
 
-def initialize_emulator(cnc_interface : str = CNC_INTERFACE, com_interface : str = None, config : EmulatorConfiguration = EMULATOR_CONFIG):
+
+def initialize_emulator(cnc_interface: str = CNC_INTERFACE, com_interface: str = None, config: EmulatorConfiguration = EMULATOR_CONFIG):
     global CNC_INTERFACE
     print(ASCII_ART)
     print("MOTD:", MOTD)
@@ -105,14 +110,17 @@ def initialize_emulator(cnc_interface : str = CNC_INTERFACE, com_interface : str
     try:
         while True:
             if config.ecc_mode_enabled:
-                raise NotImplementedException("(Error Correction Code not implemented)")
+                raise NotImplementedException(
+                    "(Error Correction Code not implemented)")
             if config.encryption_enabled:
                 raise NotImplementedException("(Encryption not implemented)")
             if config.expect_ack:
-                raise NotImplementedException("(Acknowledgement not implemented)")
+                raise NotImplementedException(
+                    "(Acknowledgement not implemented)")
             current_sensor_collection = SensorData()
             with serial.Serial("\\\\.\\" + CNC_INTERFACE, 9600, timeout=1) as cnc:
-                send_packet(current_sensor_collection, cnc, config.output_mode, config.ecc_mode_enabled, config.expect_ack, config.encryption_enabled, config.encryption_keys)
+                send_packet(current_sensor_collection, cnc, config.output_mode, config.ecc_mode_enabled,
+                            config.expect_ack, config.encryption_enabled, config.encryption_keys)
                 sleep(1)
     except KeyboardInterrupt:
         print("Detected CTRL+C, Shutting down Poseidon Engine")

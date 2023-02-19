@@ -1,10 +1,10 @@
 from serial import Serial
-import time
+# import time
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import matplotlib
-import threading
+from threading import Thread
 matplotlib.use('TkAgg')
 
 
@@ -18,10 +18,10 @@ class Data_page(tk.Frame):
         # Will say if the "update_data_cansat" loop starts, continues or stops
         self.infinite_loop = True
 
-        self.cansat_data_keys = ["id_info", "temperature", "altitude",
-                                 "pressure", "accelerationX", "accelerationY",
-                                 "accelerationZ", "rotationX", "rotationY",
-                                 "rotationZ", "latitude", "length", "uv_index"]
+        self.cansat_data_keys = ["id_info", "altitude", "pressure",
+                                 "temperature", "rotationX", "rotationY",
+                                 "rotationZ", "accelerationX", "accelerationY",
+                                 "accelerationZ", "latitude", "length", "uv_index"]
 
         self.cansat_data = {key: tk.StringVar(
             value="0") for key in self.cansat_data_keys}
@@ -43,11 +43,6 @@ class Data_page(tk.Frame):
         tk.Label(self, textvariable=self.cansat_data["id_info"], width=20).grid(
             row=0, column=1, padx=10, pady=10)
 
-        # ------------- Temperature value + label ------------- #
-        tk.Label(self, text="Temperature").grid(row=1, column=0)
-        tk.Label(self, textvariable=self.cansat_data["temperature"]).grid(
-            row=1, column=1, padx=10, pady=10)
-
         # ------------- Altitude value + label ------------- #
         tk.Label(self, text="Altitude").grid(row=2, column=0)
         tk.Label(self, textvariable=self.cansat_data["altitude"]).grid(
@@ -58,20 +53,10 @@ class Data_page(tk.Frame):
         tk.Label(self, textvariable=self.cansat_data["pressure"]).grid(
             row=3, column=1, padx=10, pady=10)
 
-        # ------------- AccelerationX value + label ------------- #
-        tk.Label(self, text="AccelerationX").grid(row=4, column=0)
-        tk.Label(self, textvariable=self.cansat_data["accelerationX"]).grid(
-            row=4, column=1, padx=10, pady=10)
-
-        # ------------- AccelerationY value + label ------------- #
-        tk.Label(self, text="AccelerationY").grid(row=0, column=2)
-        tk.Label(self, textvariable=self.cansat_data["accelerationY"]).grid(
-            row=0, column=3, padx=10, pady=10)
-
-        # ------------- AccelerationZ value + label ------------- #
-        tk.Label(self, text="AccelerationZ").grid(row=1, column=2)
-        tk.Label(self, textvariable=self.cansat_data["accelerationZ"]).grid(
-            row=1, column=3, padx=10, pady=10)
+        # ------------- Temperature value + label ------------- #
+        tk.Label(self, text="Temperature").grid(row=1, column=0)
+        tk.Label(self, textvariable=self.cansat_data["temperature"]).grid(
+            row=1, column=1, padx=10, pady=10)
 
         # ------------- RotationX value + label ------------- #
         tk.Label(self, text="RotationX").grid(row=2, column=2)
@@ -87,6 +72,21 @@ class Data_page(tk.Frame):
         tk.Label(self, text="RotationZ").grid(row=4, column=2)
         tk.Label(self, textvariable=self.cansat_data["rotationZ"]).grid(
             row=4, column=3, padx=10, pady=10, sticky="E"+"W")
+
+        # ------------- AccelerationX value + label ------------- #
+        tk.Label(self, text="AccelerationX").grid(row=4, column=0)
+        tk.Label(self, textvariable=self.cansat_data["accelerationX"]).grid(
+            row=4, column=1, padx=10, pady=10)
+
+        # ------------- AccelerationY value + label ------------- #
+        tk.Label(self, text="AccelerationY").grid(row=0, column=2)
+        tk.Label(self, textvariable=self.cansat_data["accelerationY"]).grid(
+            row=0, column=3, padx=10, pady=10)
+
+        # ------------- AccelerationZ value + label ------------- #
+        tk.Label(self, text="AccelerationZ").grid(row=1, column=2)
+        tk.Label(self, textvariable=self.cansat_data["accelerationZ"]).grid(
+            row=1, column=3, padx=10, pady=10)
 
         # ------------- Latitude value + label ------------- #
         tk.Label(self, text="Latitude").grid(row=5, column=2)
@@ -119,11 +119,12 @@ class Data_page(tk.Frame):
     def update_data_cansat(self):
         arduino = Serial("COM3", 9600, timeout=0.01)
         while self.infinite_loop == True:
-            start = time.perf_counter()
-            # This will now timeout after 0.01s
+
+            # start = time.perf_counter()
             new_info = arduino.readline().decode("utf-8").strip().split(",")
             arduino.write(b'9')
             if len(new_info) == 14:  # If new info is received
+
                 for data, value in zip(self.cansat_data_keys, new_info[1::]):
                     self.cansat_data[data].set(value)
 
@@ -134,13 +135,8 @@ class Data_page(tk.Frame):
 
                 self.update_plots()
 
-            end = time.perf_counter()
+            # end = time.perf_counter()
             # print("Esto tarda " + str(end - start))
-            # If this is a loop, and the loop depends on external
-            # self.after(1000, self.update_data_cansat)
-            # flags to run, we can toggle the loop just by changing the self.infinite_loop flag, really good idea
-            # By changing the if statement to a while statement, we no longer need self.after(), the loop and the
-            # thread will take the job
 
         arduino.close()
 
@@ -150,7 +146,7 @@ class Data_page(tk.Frame):
 
     def start_loop(self):
         self.infinite_loop = True
-        self._update_thread = threading.Thread(target=self.update_data_cansat)
+        self._update_thread = Thread(target=self.update_data_cansat)
         self._update_thread.start()
 
     def create_plots(self):
