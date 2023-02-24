@@ -7,6 +7,8 @@ class window(tk.Tk):
     def __init__(self, team_name):
         super().__init__()
 
+        self.team_name = team_name
+
         container = tk.Frame(self)  # Will contain all pages
         self.wm_title(team_name)  # Set window title
 

@@ -1,3 +1,5 @@
+from save_data import save_data
+from set_plots_labels import set_labels
 from serial import Serial
 # import time
 import tkinter as tk
@@ -26,10 +28,12 @@ class Data_page(tk.Frame):
         self.cansat_data = {key: tk.StringVar(
             value="0") for key in self.cansat_data_keys}
 
-        # ----------------- Plot data ----------------- #
-        self.time_datas = []
-        self.temperature_datas = []
-        self.pressure_datas = []
+        self.cansat_data_lists = {key: [] for key in self.cansat_data_keys}
+
+        self.labels_buttons_frame = tk.Frame(
+            self, width=500, height=500)
+
+        self.labels_buttons_frame.grid(row=0, column=0, padx=10, pady=10)
 
         self.create_labels()
 
@@ -39,82 +43,98 @@ class Data_page(tk.Frame):
 
     def create_labels(self):
         # ------------- ID value + label ------------- #
-        tk.Label(self, text="ID").grid(row=0, column=0)
-        tk.Label(self, textvariable=self.cansat_data["id_info"], width=20).grid(
+        tk.Label(self.labels_buttons_frame, text="ID").grid(row=0, column=0)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["id_info"], width=20).grid(
             row=0, column=1, padx=10, pady=10)
 
         # ------------- Altitude value + label ------------- #
-        tk.Label(self, text="Altitude").grid(row=2, column=0)
-        tk.Label(self, textvariable=self.cansat_data["altitude"]).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="Altitude").grid(row=2, column=0)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["altitude"]).grid(
             row=2, column=1, padx=10, pady=10)
 
         # ------------- Pressure value + label ------------- #
-        tk.Label(self, text="Pressure").grid(row=3, column=0)
-        tk.Label(self, textvariable=self.cansat_data["pressure"]).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="Pressure").grid(row=3, column=0)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["pressure"]).grid(
             row=3, column=1, padx=10, pady=10)
 
         # ------------- Temperature value + label ------------- #
-        tk.Label(self, text="Temperature").grid(row=1, column=0)
-        tk.Label(self, textvariable=self.cansat_data["temperature"]).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="Temperature").grid(row=1, column=0)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["temperature"]).grid(
             row=1, column=1, padx=10, pady=10)
 
         # ------------- RotationX value + label ------------- #
-        tk.Label(self, text="RotationX").grid(row=2, column=2)
-        tk.Label(self, textvariable=self.cansat_data["rotationX"]).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="RotationX").grid(row=2, column=2)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["rotationX"]).grid(
             row=2, column=3, padx=10, pady=10)
 
         # ------------- RotationY value + label ------------- #
-        tk.Label(self, text="RotationY").grid(row=3, column=2)
-        tk.Label(self, textvariable=self.cansat_data["rotationY"]).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="RotationY").grid(row=3, column=2)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["rotationY"]).grid(
             row=3, column=3, padx=10, pady=10)
 
         # ------------- RotationZ value + label ------------- #
-        tk.Label(self, text="RotationZ").grid(row=4, column=2)
-        tk.Label(self, textvariable=self.cansat_data["rotationZ"]).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="RotationZ").grid(row=4, column=2)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["rotationZ"]).grid(
             row=4, column=3, padx=10, pady=10, sticky="E"+"W")
 
         # ------------- AccelerationX value + label ------------- #
-        tk.Label(self, text="AccelerationX").grid(row=4, column=0)
-        tk.Label(self, textvariable=self.cansat_data["accelerationX"]).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="AccelerationX").grid(row=4, column=0)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["accelerationX"]).grid(
             row=4, column=1, padx=10, pady=10)
 
         # ------------- AccelerationY value + label ------------- #
-        tk.Label(self, text="AccelerationY").grid(row=0, column=2)
-        tk.Label(self, textvariable=self.cansat_data["accelerationY"]).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="AccelerationY").grid(row=0, column=2)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["accelerationY"]).grid(
             row=0, column=3, padx=10, pady=10)
 
         # ------------- AccelerationZ value + label ------------- #
-        tk.Label(self, text="AccelerationZ").grid(row=1, column=2)
-        tk.Label(self, textvariable=self.cansat_data["accelerationZ"]).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="AccelerationZ").grid(row=1, column=2)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["accelerationZ"]).grid(
             row=1, column=3, padx=10, pady=10)
 
         # ------------- Latitude value + label ------------- #
-        tk.Label(self, text="Latitude").grid(row=5, column=2)
-        tk.Label(self, textvariable=self.cansat_data["latitude"], width=20).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="Latitude").grid(row=5, column=2)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["latitude"], width=20).grid(
             row=5, column=3, padx=10, pady=10, sticky="E"+"W")
 
         # ------------- Length value ------------- #
-        tk.Label(self, text="Length").grid(row=0, column=4)
-        tk.Label(self, textvariable=self.cansat_data["length"]).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="Length").grid(row=0, column=4)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["length"]).grid(
             row=0, column=5, padx=10, pady=10, sticky="E"+"W")
 
         # ------------- UV Index ------------- #
-        tk.Label(self, text="UV Index").grid(row=1, column=4)
-        tk.Label(self, textvariable=self.cansat_data["uv_index"], width=20).grid(
+        tk.Label(self.labels_buttons_frame,
+                 text="UV Index").grid(row=1, column=4)
+        tk.Label(self.labels_buttons_frame, textvariable=self.cansat_data["uv_index"], width=20).grid(
             row=1, column=5, padx=10, pady=10)
 
     def create_buttons(self):
-        back_home = tk.Button(self, text="Back to Home",
+        back_home = tk.Button(self.labels_buttons_frame, text="Back to Home",
                               command=lambda: self.controller.show_frame("Home"))
         back_home.grid(row=7, column=0, ipadx=10, ipady=10)
 
-        start_loop_button = tk.Button(self, text="Start",
+        start_loop_button = tk.Button(self.labels_buttons_frame, text="Start",
                                       command=lambda: self.start_loop())
         start_loop_button.grid(row=7, column=1, ipadx=10, ipady=10)
 
-        stop_loop_button = tk.Button(self, text="Stop",
+        stop_loop_button = tk.Button(self.labels_buttons_frame, text="Stop",
                                      command=lambda: self.stop_loop())
         stop_loop_button.grid(row=7, column=2, ipadx=10, ipady=10)
+
+        save_data_button = tk.Button(self.labels_buttons_frame, text="Save",
+                                     command=lambda: save_data(self.cansat_data_lists))
+        save_data_button.grid(row=7, column=3, ipadx=10, ipady=10)
 
     def update_data_cansat(self):
         arduino = Serial("COM3", 9600, timeout=0.01)
@@ -125,15 +145,14 @@ class Data_page(tk.Frame):
             arduino.write(b'9')
             if len(new_info) == 14:  # If new info is received
 
-                for data, value in zip(self.cansat_data_keys, new_info[1::]):
-                    self.cansat_data[data].set(value)
+                if self.controller.team_name == new_info[0]:
+                    for data, value in zip(self.cansat_data_keys, new_info[1::]):
+                        self.cansat_data[data].set(value)
+                        self.cansat_data_lists[data].append(float(value))
 
-                # ------- Plots data ------- #
-                self.time_datas.append(int(new_info[1]))
-                self.temperature_datas.append(float(new_info[4]))
-                self.pressure_datas.append(float(new_info[3]))
-
-                self.update_plots()
+                    self.update_plots()
+                else:
+                    print("Which team is this?")
 
             # end = time.perf_counter()
             # print("Esto tarda " + str(end - start))
@@ -152,19 +171,21 @@ class Data_page(tk.Frame):
     def create_plots(self):
 
         temp_press_time_fig = plt.figure(figsize=(8, 8))
+        temp_press_time_fig.suptitle("Plots")
 
         # adding the subplot
         self.plots = [temp_press_time_fig.add_subplot(2, 1, 1), temp_press_time_fig.add_subplot(
             2, 1, 2)]
 
+        set_labels(self)
+
         self.canvas = FigureCanvasTkAgg(temp_press_time_fig, self)
-        self.canvas.get_tk_widget().grid(pady=20, row=10, column=10)
+        self.canvas.get_tk_widget().grid(pady=20, row=0, rowspan=6, column=2)
 
     def update_plots(self):
         for current_plot in self.plots:
             current_plot.clear()
 
-        self.plots[0].plot(self.time_datas, self.temperature_datas)
-        self.plots[1].plot(self.time_datas, self.pressure_datas)
+        set_labels(self)
 
         self.canvas.draw()
