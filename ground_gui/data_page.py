@@ -172,20 +172,21 @@ class Data_page(tk.Frame):
 
         temp_press_time_fig = plt.figure(figsize=(8, 8))
         temp_press_time_fig.suptitle("Plots")
+        temp_press_time_fig.set_facecolor("#F0F0F0")
 
         # adding the subplot
         self.plots = [temp_press_time_fig.add_subplot(2, 1, 1), temp_press_time_fig.add_subplot(
             2, 1, 2)]
 
-        set_labels(self)
+        set_labels(self.plots, self.cansat_data_lists)
 
         self.canvas = FigureCanvasTkAgg(temp_press_time_fig, self)
-        self.canvas.get_tk_widget().grid(pady=20, row=0, rowspan=6, column=2)
+        self.canvas.get_tk_widget().grid(pady=20, row=0, rowspan=10, column=2)
 
     def update_plots(self):
         for current_plot in self.plots:
             current_plot.clear()
 
-        set_labels(self)
+        set_labels(self.plots, self.cansat_data_lists)
 
         self.canvas.draw()
