@@ -81,6 +81,34 @@ void setup() {
 void send_data(SensorData sensorData)
 {
   // TODO: Send function
+  String paquete;
+
+   paquete+="Helios";
+   paquete+=String(sensorData.time);
+   paquete+=",";
+   paquete+=String(sensorData.pressure);
+   paquete+=",";
+   paquete+=String(sensorData.temperature);
+   paquete+=",";   
+   paquete+=String(sensorData.velocityRotationX);
+   paquete+=",";
+   paquete+=String(sensorData.velocityRotationY);
+   paquete+=",";
+   paquete+=String(sensorData.velocityRotationZ);
+   paquete+=",";
+   paquete+=String(sensorData.accelerationX);
+   paquete+=",";
+   paquete+=String(sensorData.accelerationY);
+   paquete+=",";
+   paquete+=String(sensorData.accelerationZ);
+   paquete+=",";
+   paquete+=String(sensorData.latitude);
+   paquete+=",";
+   paquete+=String(sensorData.longitude);
+   paquete+=",";
+   paquete+=String(sensorData.UVIndex);
+  Serial.println(paquete);   
+  radio.println(paquete);
 }
 
 void loop() { 
