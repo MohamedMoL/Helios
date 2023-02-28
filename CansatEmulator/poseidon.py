@@ -11,6 +11,7 @@ from time import sleep
 from random import randint, uniform, random, choice
 from pathlib import Path
 import serial
+import reedsolo
 
 ASCII_ART = \
     '''
@@ -39,6 +40,7 @@ CNC_INTERFACE = "\\\\.\\POSEIDON69"
 
 packet_count = 0
 
+RSCODEC = reedsolo.RSCodec(48, 196)
 
 class NotImplementedException(Exception):
     pass
@@ -63,19 +65,21 @@ class SensorData():
         self.Longitude = uniform(-180, 180)
         self.UVIndex = round(uniform(0, 14), 2)
 
-    def construct_binary_packet(self) -> bytes:
-        raise NotImplementedException(
-            "Construct binary packet not implemented")
+    def construct_binary_payload(self) -> bytes:
+        raise NotImplementedException("Construct binary packet not implemented")
 
-    def construct_text_packet(self) -> bytes:
+    def construct_text_payload(self) -> bytes:
         array = []
         for name in self.__dict__:
             array.append(self.__dict__[name])
         array = [str(x) for x in array]
         packet_str = ",".join(array)
-        packet_str += "\r\n"
         packet_bytes = packet_str.encode("ASCII")
         return packet_bytes
+    
+    def debug_print_payload(self):
+        ascii_bytes = self.construct_text_payload()
+        print(ascii_bytes.decode("ASCII"))
 
 
 def send_packet(sensor_data_collection: SensorData,
@@ -85,13 +89,35 @@ def send_packet(sensor_data_collection: SensorData,
                 ack: bool,
                 encrypted: bool,
                 key: str = None):
+    
+    # Generate sensor data payload
     if output_mode == "text":
-        data = sensor_data_collection.construct_text_packet()
-    else:
-        data = sensor_data_collection.construct_binary_packet()
+        payload = sensor_data_collection.construct_text_payload()
+    elif output_mode == 'binary':
+        payload = sensor_data_collection.construct_binary_payload()
 
-    serial_interface.write(data)
-    print(data.decode("ASCII"))
+    # Encrypt the payload
+    if encrypted:
+        raise NotImplementedException("(Encryption not implemented)")
+
+    # Generates error correction for the (encrypted/unencrypted) payload
+    if ecc:
+        payload = RSCODEC.encode(payload)
+    
+    # Surrounds the payload with Start of Packet and End of Packet
+    # Or just append \r\n if it's in text mode
+
+    if output_mode == 'text':
+        payload += b'\r\n'
+    else:
+        raise NotImplementedException("(Error Correction Code not implemented)")
+
+    serial_interface.write(payload)
+
+    # Text mode debug output
+    #print(payload.decode("ASCII"))
+    sensor_data_collection.debug_print_payload()
+    if ecc: print("+ECC")
 
 
 def initialize_emulator(cnc_interface: str = CNC_INTERFACE, com_interface: str = None, config: EmulatorConfiguration = EMULATOR_CONFIG):
@@ -109,11 +135,6 @@ def initialize_emulator(cnc_interface: str = CNC_INTERFACE, com_interface: str =
     # Actual loop
     try:
         while True:
-            if config.ecc_mode_enabled:
-                raise NotImplementedException(
-                    "(Error Correction Code not implemented)")
-            if config.encryption_enabled:
-                raise NotImplementedException("(Encryption not implemented)")
             if config.expect_ack:
                 raise NotImplementedException(
                     "(Acknowledgement not implemented)")
