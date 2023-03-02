@@ -12,6 +12,7 @@ from random import randint, uniform, random, choice
 from pathlib import Path
 import serial
 import reedsolo
+import time
 
 ASCII_ART = \
     '''
@@ -50,8 +51,8 @@ class SensorData():
     def __init__(self):
         global packet_count
         self.ID = "Helios"
-        self.PacketID = packet_count
-        packet_count += 1
+        packet_count += 1000
+        self.time = packet_count
         self.Altitude = round(uniform(0, 1000), 2)
         self.Pressure = round(uniform(1000000, 10000000), 2)
         self.Temperature = round(uniform(-20, 85), 2)
@@ -64,7 +65,7 @@ class SensorData():
         self.Latitude = uniform(-90, 90)
         self.Longitude = uniform(-180, 180)
         self.UVIndex = round(uniform(0, 14), 2)
-
+        
     def construct_binary_payload(self) -> bytes:
         raise NotImplementedException("Construct binary packet not implemented")
 
