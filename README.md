@@ -1,10 +1,9 @@
-# maspa_cansat
+# Helios
 
-maspa_cansat (temporary name) is a can-sized satellite participating the [Esero CanSat competition](https://esero.es/cansat/).
+Helios is a can-sized satellite development team participating the [Esero CanSat competition](https://esero.es/cansat/).
 
-This satelite is developed by a team of 6 people and a mentor, we're not going to disclose team members or the development location yet.
+The Helios satellite is developed by a team of 6 people and a mentor, we're not going to disclose team members or the development location yet.
 
-maspa_cansat is a temporary name, currently we don't have a name yet. This is a temporary name which will be replaced when the development is close to the final stage.
 # License
 Pending license
 
