@@ -15,9 +15,13 @@ class Home(tk.Frame):
         label = tk.Label(self, text="Home")
         label.pack(pady=10, padx=10)
 
-        button1 = tk.Button(self, text="Page one",
-                            command=lambda: controller.show_frame("PageOne"))
+        button1 = tk.Button(self, text="Data page",
+                            command=lambda: controller.show_frame("Data Page"))
         button1.pack(pady=10, padx=10)
+
+        button2 = tk.Button(self, text="Show info",
+                            command=lambda: controller.show_frame("Show Info"))
+        button2.pack(pady=10, padx=10)
 
         button4 = tk.Button(self, text="Quit",
                             command=lambda: controller.quit())

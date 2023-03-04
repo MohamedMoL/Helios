@@ -1,6 +1,9 @@
 import tkinter as tk
+from threading import Thread
 from home import Home
-from data_page import Data_page
+from updated_data_page import Data_page
+from show_info_page import Show_info_page
+from cansat_data import helios
 
 
 class window(tk.Tk):
@@ -17,9 +20,11 @@ class window(tk.Tk):
 
         container.pack(side="top", fill="both", expand=True)
 
+        helios.data = {key: tk.StringVar(value="0") for key in helios.keys}
+
         # -------- Page changing --------- #
-        self.frames = {"Home": "", "PageOne": ""}
-        for key, frame in zip(self.frames.keys(), (Home, Data_page)):
+        self.frames = {"Home": "", "Data Page": "", "Show Info": ""}
+        for key, frame in zip(self.frames.keys(), (Home, Data_page, Show_info_page)):
 
             acual_frame = frame(container, self)
 
@@ -33,3 +38,9 @@ class window(tk.Tk):
 
         frame = self.frames[cont]
         frame.tkraise()  # Move the frame over other frames
+
+    def start_loop(self):
+        helios.infinite_loop = True
+        self._update_thread = Thread(
+            target=helios.update_data_cansat, args=(self.frames["Data Page"].update_plots, self.frames["Show Info"].insert_row))
+        self._update_thread.start()

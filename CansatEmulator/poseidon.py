@@ -8,11 +8,11 @@
 
 from poseidon_config import EmulatorConfiguration, get_config
 from time import sleep
-from random import randint, uniform, random, choice
+from random import uniform, choice
 from pathlib import Path
 import serial
 import reedsolo
-import time
+# import time
 
 ASCII_ART = \
     '''
@@ -43,6 +43,7 @@ packet_count = 0
 
 RSCODEC = reedsolo.RSCodec(48, 196)
 
+
 class NotImplementedException(Exception):
     pass
 
@@ -65,9 +66,10 @@ class SensorData():
         self.Latitude = uniform(-90, 90)
         self.Longitude = uniform(-180, 180)
         self.UVIndex = round(uniform(0, 14), 2)
-        
+
     def construct_binary_payload(self) -> bytes:
-        raise NotImplementedException("Construct binary packet not implemented")
+        raise NotImplementedException(
+            "Construct binary packet not implemented")
 
     def construct_text_payload(self) -> bytes:
         array = []
@@ -77,7 +79,7 @@ class SensorData():
         packet_str = ",".join(array)
         packet_bytes = packet_str.encode("ASCII")
         return packet_bytes
-    
+
     def debug_print_payload(self):
         ascii_bytes = self.construct_text_payload()
         print(ascii_bytes.decode("ASCII"))
@@ -90,7 +92,7 @@ def send_packet(sensor_data_collection: SensorData,
                 ack: bool,
                 encrypted: bool,
                 key: str = None):
-    
+
     # Generate sensor data payload
     if output_mode == "text":
         payload = sensor_data_collection.construct_text_payload()
@@ -104,21 +106,23 @@ def send_packet(sensor_data_collection: SensorData,
     # Generates error correction for the (encrypted/unencrypted) payload
     if ecc:
         payload = RSCODEC.encode(payload)
-    
+
     # Surrounds the payload with Start of Packet and End of Packet
     # Or just append \r\n if it's in text mode
 
     if output_mode == 'text':
         payload += b'\r\n'
     else:
-        raise NotImplementedException("(Error Correction Code not implemented)")
+        raise NotImplementedException(
+            "(Error Correction Code not implemented)")
 
     serial_interface.write(payload)
 
     # Text mode debug output
-    #print(payload.decode("ASCII"))
+    # print(payload.decode("ASCII"))
     sensor_data_collection.debug_print_payload()
-    if ecc: print("+ECC")
+    if ecc:
+        print("+ECC")
 
 
 def initialize_emulator(cnc_interface: str = CNC_INTERFACE, com_interface: str = None, config: EmulatorConfiguration = EMULATOR_CONFIG):
