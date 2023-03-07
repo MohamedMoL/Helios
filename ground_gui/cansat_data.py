@@ -1,4 +1,5 @@
 from serial import Serial
+from threading import Thread
 
 
 class cansat:
@@ -34,6 +35,16 @@ class cansat:
                 insert_row()
 
         arduino.close()
+
+    def start_loop(self, update_plots, insert_row):
+        if not helios.infinite_loop:
+            helios.infinite_loop = True
+            self._update_thread = Thread(
+                target=helios.update_data_cansat, args=(update_plots, insert_row))
+            self._update_thread.start()
+
+    def stop_loop(self):
+        helios.infinite_loop = False
 
 
 helios = cansat()

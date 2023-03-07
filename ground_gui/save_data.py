@@ -1,4 +1,5 @@
 from datetime import datetime
+from cansat_data import helios
 
 
 def save_data(data):
@@ -22,4 +23,5 @@ def read_data(file_root):
             for data in info[1::]:
                 cansat_data = data.split(":")
                 cansat_nums = cansat_data[1].strip().split(",")
-                print(f"{cansat_data[0]}: {cansat_nums}")
+                cansat_nums = [float(num) for num in cansat_nums]
+                helios.lists[cansat_data[0]] = cansat_nums

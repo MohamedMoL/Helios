@@ -16,7 +16,7 @@ class window(tk.Tk):
         self.wm_title(team_name)  # Set window title
 
         # Create a fullscreen window
-        self.attributes('-fullscreen', True)
+        self.state("zoomed")
 
         container.pack(side="top", fill="both", expand=True)
 
@@ -38,9 +38,3 @@ class window(tk.Tk):
 
         frame = self.frames[cont]
         frame.tkraise()  # Move the frame over other frames
-
-    def start_loop(self):
-        helios.infinite_loop = True
-        self._update_thread = Thread(
-            target=helios.update_data_cansat, args=(self.frames["Data Page"].update_plots, self.frames["Show Info"].insert_row))
-        self._update_thread.start()
