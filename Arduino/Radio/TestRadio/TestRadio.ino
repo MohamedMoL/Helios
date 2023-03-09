@@ -14,7 +14,7 @@
 
 #include <SoftwareSerial.h>
 
-SoftwareSerial radio(2, 3); // Pin2: RX， Pin3: TX
+SoftwareSerial radio(8, 9); // Pin2: RX， Pin3: TX
 
 void setup(){
   Serial.begin(9600); // Velocidad de comunicacion

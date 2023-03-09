@@ -54,17 +54,19 @@ class SensorData():
         self.ID = "Helios"
         packet_count += 1000
         self.time = packet_count
-        self.Altitude = round(uniform(0, 1000), 2)
+        #self.Altitude = round(uniform(0, 1000), 2)
         self.Pressure = round(uniform(1000000, 10000000), 2)
         self.Temperature = round(uniform(-20, 85), 2)
-        self.RotationX = round(uniform(0, 360), 2)
-        self.RotationY = round(uniform(0, 360), 2)
-        self.RotationZ = round(uniform(0, 360), 2)
+        self.VelocityRotationX = round(uniform(0, 16), 2)
+        self.VelocityRotationY = round(uniform(0, 16), 2)
+        self.VelocityRotationZ = round(uniform(0, 16), 2)
         self.AccelerationX = round(uniform(0, 4), 2)
         self.AccelerationY = round(uniform(0, 4), 2)
         self.AccelerationZ = round(uniform(0, 4), 2)
-        self.Latitude = uniform(-90, 90)
-        self.Longitude = uniform(-180, 180)
+        #self.Latitude = uniform(-90, 90)
+        #self.Longitude = uniform(-180, 180)
+        self.Latitude = "NAN"
+        self.Longitude = "NAN"
         self.UVIndex = round(uniform(0, 14), 2)
 
     def construct_binary_payload(self) -> bytes:

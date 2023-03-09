@@ -1,19 +1,20 @@
+#include <limits.h>
 struct SensorData {
   /* Onboard timer */
-  long time; // ms
+  long time = 0; // ms
   /* BMP280 (Pressure, temperature) */ 
-  float temperature; // degrees celsius
-  float pressure; // pascals
+  float temperature = 0; // degrees celsius
+  float pressure = 0; // pascals
   // MPU6050 (Gyroscope / Accelerometer)
-  float velocityRotationX; // degrees per second
-  float velocityRotationY; // degrees per second
-  float velocityRotationZ; // degrees per second
-  float accelerationX; // meters per second squared (m^s2)
-  float accelerationY; // meters per second squared (m^s2)
-  float accelerationZ; // meters per second squared (m^s2)
+  float velocityRotationX = 0; // degrees per second
+  float velocityRotationY = 0; // degrees per second
+  float velocityRotationZ = 0; // degrees per second
+  float accelerationX = 0; // meters per second squared (m^s2)
+  float accelerationY = 0; // meters per second squared (m^s2)
+  float accelerationZ = 0; // meters per second squared (m^s2)
   // NEO-M8N (GPS)
-  float latitude;
-  float longitude;
+  float latitude = NAN;
+  float longitude = NAN;
   // SI1145 (UV Index)
-  float UVIndex;
+  float UVIndex = 0;
 };

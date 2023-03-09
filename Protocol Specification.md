@@ -28,9 +28,9 @@ The software onboard will collect the following data:
 | Time                  | Unsigned Long | Arduino Power-on Timer, in ms                       |
 | Pressure              | Float         | BMP280: Pressure, in Pascals                        |
 | Temperature           | Float         | BMP280: Temperature, in ºC                          |
-| AccelerationRotationX | Float         | MPU6050: Rotation in direction X, in degrees/second |
-| AccelerationRotationY | Float         | MPU6050: Rotation in direction Y, in degrees/second |
-| AccelerationRotationZ | Float         | MPU6050: Rotation in direction Z, in degrees/second |
+| VelocityRotationX     | Float         | MPU6050: Rotation in direction X, in degrees/second |
+| VelocityRotationY     | Float         | MPU6050: Rotation in direction Y, in degrees/second |
+| VelocityRotationZ     | Float         | MPU6050: Rotation in direction Z, in degrees/second |
 | AccelerationX         | Float         | MPU6050: Acceleration on X axis, in g forces        |
 | AccelerationY         | Float         | MPU6050: Acceleration on Y axis, in g forces        |
 | AccelerationZ         | Float         | MPU6050: Acceleration on Z axis, in g forces        |
@@ -51,7 +51,7 @@ The payload can have up to 24 erratas before it becomes unrepairable.
 
 The plain data MUST be an **ASCII** encoded string, an entry of CSV MUST display the data entries in the following order:
 
-`ID,Time,Altitude,Pressure,Temperature,AccelerationRotationX,AccelerationRotationY,AccelerationRotationZ,AccelerationX,AccelerationY,AccelerationZ,Latitude,Longitude,UVIndex`
+`ID,Time,Pressure,Temperature,VelocityRotationX,VelocityRotationY,VelocityRotationZ,AccelerationX,AccelerationY,AccelerationZ,Latitude,Longitude,UVIndex`
 
 ## Payload Encryption
 
