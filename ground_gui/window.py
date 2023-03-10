@@ -1,5 +1,4 @@
 import tkinter as tk
-from threading import Thread
 from home import Home
 from updated_data_page import Data_page
 from show_info_page import Show_info_page

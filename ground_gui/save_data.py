@@ -8,7 +8,7 @@ def save_data(data):
     date = date_time_now.strftime("%d/%m/%Y %H:%M:%S")
     file_name = date_time_now.strftime("%d_%m_%Y_%H_%M_%S")
 
-    with open(f"./recopilation_of_data/{file_name}.txt", "a") as my_file:
+    with open(f"ground_gui/recopilation_of_data/{file_name}.txt", "w") as my_file:
         my_file.write(f"# --- {date} --- #\n")
         for key in data:
             my_file.write(f"{key}:")

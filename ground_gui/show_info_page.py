@@ -27,7 +27,7 @@ class Show_info_page(tk.Frame):
 
         # Treeview instance
         self.treeview = Treeview(
-            container, columns=helios.keys[1::], height=int(self.winfo_screenheight() / 10 * 8))
+            container, columns=helios.keys[1::])
 
         # Scrollbar instance + config
         vscrollbar = Scrollbar(self.treeview, orient=tk.VERTICAL)
