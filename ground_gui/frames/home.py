@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Button
+from tkinter import *
 
 
 class Home(Frame):
@@ -11,6 +11,10 @@ class Home(Frame):
         # Make the window use full screen
         self.config(width=screen_width, height=screen_height)
         self.pack_propagate(0)
+
+        label = Label(self, image=controller.logo)
+        label.image = controller.logo
+        label.place(relx=0.5, rely=0.5, anchor='center')
 
         label = Label(self, text="Home")
         label.pack(pady=10, padx=10)

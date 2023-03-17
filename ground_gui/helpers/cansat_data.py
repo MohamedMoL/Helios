@@ -38,7 +38,9 @@ class cansat:
                 self.lists["altitude"].append(altitude)
                 self.new_info.append(altitude)
 
-                update_plots()
+                update_plots(
+                    self.lists["id_info"], self.lists["temperature"], self.lists["pressure"])
+
                 insert_row()
 
         arduino.close()
@@ -61,5 +63,3 @@ class cansat:
 
 
 helios = cansat()
-
-# print(helios.calculate_altitude(102_065))

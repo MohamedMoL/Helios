@@ -1,19 +1,16 @@
 from cansat_data import helios
+from plots import Plots
 from save_data import save_data
-from set_plots_labels import set_labels
 from file_explorer import browseFiles
-# import time
 import tkinter as tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.pyplot import figure
-import matplotlib
-matplotlib.use('TkAgg')
 
 
 class Data_page(tk.Frame):
 
     def __init__(self, parent, controller):
         super().__init__(parent)
+
+        self.plots = Plots()
 
         self.show_frame = controller.show_frame  # Refers to the tk.Tk()
         self.frames_methods = controller.frames
@@ -29,7 +26,7 @@ class Data_page(tk.Frame):
 
         self.create_buttons()
 
-        self.create_plots()
+        self.plots.set_plots(self)
 
     def create_labels(self):
         # ------------- ID value + label ------------- #
@@ -116,7 +113,7 @@ class Data_page(tk.Frame):
 
         start_loop_button = tk.Button(self.labels_buttons_frame, text="Start",
                                       command=lambda: helios.start_loop(
-                                          self.update_plots,
+                                          self.plots.update_plots,
                                           self.frames_methods["Show Info"].insert_row))
         start_loop_button.grid(row=7, column=1, ipadx=10, ipady=10)
 
@@ -135,26 +132,3 @@ class Data_page(tk.Frame):
         recover_info_button = tk.Button(self.labels_buttons_frame, text="Recover",
                                         command=lambda: browseFiles())
         recover_info_button.grid(row=7, column=5, ipadx=10, ipady=10)
-
-    def create_plots(self):
-
-        temp_press_time_fig = figure(figsize=(8, 8))
-        temp_press_time_fig.suptitle("Plots")
-        temp_press_time_fig.set_facecolor("#F0F0F0")
-
-        # adding the subplot
-        self.plots = [temp_press_time_fig.add_subplot(2, 1, 1), temp_press_time_fig.add_subplot(
-            2, 1, 2)]
-
-        set_labels(self.plots, helios.lists)
-
-        self.canvas = FigureCanvasTkAgg(temp_press_time_fig, self)
-        self.canvas.get_tk_widget().grid(pady=20, row=0, rowspan=10, column=2)
-
-    def update_plots(self):
-        for current_plot in self.plots:
-            current_plot.clear()
-
-        set_labels(self.plots, helios.lists)
-
-        self.canvas.draw()

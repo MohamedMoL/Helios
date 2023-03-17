@@ -1,7 +1,6 @@
-import tkinter as tk
-from tkinter.ttk import Style, Treeview, Scrollbar
 from cansat_data import helios
-
+from tkinter.ttk import Style, Treeview, Scrollbar
+import tkinter as tk
 
 class Show_info_page(tk.Frame):
     def __init__(self, parent, controller):
