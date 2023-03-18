@@ -8,38 +8,39 @@ class cansat:
 
         self.infinite_loop = False
 
-        self.keys = ["id_info", "pressure",
-                     "temperature", "rotationX", "rotationY",
-                     "rotationZ", "accelerationX", "accelerationY",
-                     "accelerationZ", "latitude", "length", "uv_index", "altitude"]
+        self.keys = ["Time", "Pressure", "Temperature",
+                    "RotationX", "RotationY", "RotationZ",
+                    "AccelerationX", "AccelerationY", "AccelerationZ",
+                    "Latitude", "Length", "UV index", "Altitude"]
 
         self.data = {key: "0" for key in self.keys}
+        self.data["Packet id"] = "0"
 
         self.lists = {key: [] for key in self.keys}
-
-        self.new_info = []
 
     def update_data_cansat(self, update_plots, insert_row):
         arduino = Serial("COM3", 9600, timeout=0.01)
         while self.infinite_loop == True:
 
-            self.new_info = arduino.readline().decode("utf-8").strip().split(",")
+            new_info = arduino.readline().decode("utf-8").strip().split(",")
+            new_info_nums = [float(num) for num in new_info[1::]]
             arduino.write(b'9')
-            if len(self.new_info) == 13:  # If new info is received
+            if len(new_info) == 13:  # If new info is received
 
-                for data, value in zip(self.keys[:-1:], self.new_info[1::]):
+                for data, value in zip(self.keys[:-1:], new_info_nums):
                     self.data[data].set(value)
-                    self.lists[data].append(float(value))
+                    self.lists[data].append(value)
+
+                self.data["Packet id"].set(self.data["Packet id"].get() + 1)
 
                 altitude = round(self.calculate_altitude(
-                    self.data["pressure"].get()), 2)
+                    self.data["Pressure"].get()), 2)
 
-                self.data["altitude"].set(altitude)
-                self.lists["altitude"].append(altitude)
-                self.new_info.append(altitude)
+                self.data["Altitude"].set(altitude)
+                self.lists["Altitude"].append(altitude)
 
                 update_plots(
-                    self.lists["id_info"], self.lists["temperature"], self.lists["pressure"])
+                    self.lists["Time"], self.lists["Temperature"], self.lists["Pressure"])
 
                 insert_row()
 
@@ -56,7 +57,7 @@ class cansat:
         helios.infinite_loop = False
 
     def calculate_altitude(self, pressure, seaLevelhPa=1019):
-        pressure = float(pressure) / 100
+        pressure /= 100
         altitude = 44330 * \
             (1.0 - pow(pressure / seaLevelhPa, 0.1903))
         return altitude

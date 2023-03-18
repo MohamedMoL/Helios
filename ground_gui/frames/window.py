@@ -3,10 +3,10 @@ from cansat_data import helios
 from show_info_page import Show_info_page
 from updated_data_page import Data_page
 from home import Home
-import tkinter as tk
+from tkinter import Tk, Frame, DoubleVar
 
 
-class window(tk.Tk):
+class window(Tk):
     def __init__(self, team_name):
         super().__init__()
 
@@ -16,7 +16,7 @@ class window(tk.Tk):
         # icon = icon.resize((900, 900), Image.ANTIALIAS)
         self.logo = ImageTk.PhotoImage(icon)
 
-        container = tk.Frame(self)  # Will contain all pages
+        container = Frame(self)  # Will contain all pages
         self.wm_title(team_name)  # Set window title
         self.iconphoto(False, self.logo) # Set icon image
 
@@ -26,7 +26,7 @@ class window(tk.Tk):
         container.pack()
 
         # Changes values to StringVar
-        helios.data = {key: tk.StringVar(value="0") for key in helios.keys}
+        helios.data = {key: DoubleVar(value=0) for key in helios.data.keys()}
 
         # -------- Page changing --------- #
         self.frames = {"Home": "", "Data Page": "", "Show Info": ""}

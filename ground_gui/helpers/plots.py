@@ -1,5 +1,5 @@
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.pyplot import figure
+from matplotlib.pyplot import figure, subplots_adjust
 
 
 class Plots:
@@ -19,14 +19,22 @@ class Plots:
     def create_plots(self, fig):
         plots = [fig.add_subplot(2, 1, 1), fig.add_subplot(
             2, 1, 2)]
+        
+        subplots_adjust(left=0.1,
+                    bottom=0.1,
+                    right=0.9,
+                    top=0.9,
+                    wspace=0.4,
+                    hspace=0.4)
 
         # Temperature plot
-        plots[0].set_title('subplot 1')
-        plots[0].set_ylabel('Temperature (º)')
+        plots[0].set_title('Evolution > Celsius/ms')
+        plots[0].set_ylabel('Temperature (ºC)')
+        plots[0].set_xlabel('Time (ms)')
 
         # Pressure plot
-        plots[1].set_title('subplot 2')
-        plots[1].set_xlabel('Time (s)')
+        plots[1].set_title('Evolution > Pa/ms')
+        plots[1].set_xlabel('Time (ms)')
         plots[1].set_ylabel('Pressure (Pa)')
 
         return plots
@@ -39,18 +47,21 @@ class Plots:
         for current_plot in self.plots:
             current_plot.clear()
 
-        # Temperature plot
-        self.plots[0].set_title('subplot 1')
-        self.plots[0].set_ylabel('Temperature (º)')
-        self.plots[0].plot(ids, temperatures)
+        self.update_temperature_plot(ids, temperatures)
 
-        # Pressure plot
-        self.plots[1].set_title('subplot 2')
-
-        self.plots[1].set_xlabel('Time (s)')
-        self.plots[1].set_ylabel('Pressure (Pa)')
-
-        self.plots[1].plot(ids, pressures)
+        self.update_pressure_plot(ids, pressures)
 
         # Re-draw the plots
         self.canvas.draw()
+
+    def update_temperature_plot(self, ids, temperatures):
+        self.plots[0].set_title('Evolution > Celsius/ms')
+        self.plots[0].set_ylabel('Temperature (ºC)')
+        self.plots[0].set_xlabel('Time (ms)')
+        self.plots[0].plot(ids, temperatures, color="red")
+
+    def update_pressure_plot(self, ids, pressures):
+        self.plots[1].set_title('Evolution > Pa/ms')
+        self.plots[1].set_xlabel('Time (ms)')
+        self.plots[1].set_ylabel('Pressure (Pa)')
+        self.plots[1].plot(ids, pressures, color="green")

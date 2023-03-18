@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Frame, Label, Button
 
 
 class Home(Frame):

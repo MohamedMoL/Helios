@@ -13,7 +13,7 @@ class Show_info_page(tk.Frame):
 
         # Treeview dimensions
         treeview_height = int(self.winfo_screenheight() / 10 * 8.5)
-        column_width = int(self.winfo_screenwidth() / 13)
+        column_width = int(self.winfo_screenwidth() / 14)
 
         # Create the frame that will contain the treeview
         container = tk.Frame(
@@ -22,11 +22,9 @@ class Show_info_page(tk.Frame):
         container.pack()
         container.pack_propagate(0)
 
-        # self.controller = controller
-
         # Treeview instance
         self.treeview = Treeview(
-            container, columns=helios.keys[1::])
+            container, columns=helios.keys)
 
         # Scrollbar instance + config
         vscrollbar = Scrollbar(self.treeview, orient=tk.VERTICAL)
@@ -36,12 +34,12 @@ class Show_info_page(tk.Frame):
         # Treeview config
         self.treeview.config(yscrollcommand=vscrollbar.set)
 
-        # Treewview columns / headings
-        self.treeview.heading("#0", text="Time")
+        # Treeview columns / headings
+        self.treeview.heading("#0", text="Packet ID")
         self.treeview.column(column="#0", anchor="center",
                              width=column_width, stretch=0)
 
-        for i in helios.keys[1::]:
+        for i in helios.keys:
             self.treeview.heading(i, text=i)
             self.treeview.column(column=i, anchor="center",
                                  width=column_width, stretch=0)
@@ -62,5 +60,9 @@ class Show_info_page(tk.Frame):
 
     def insert_row(self):
         self.treeview.insert(
-            "", tk.END, text=helios.new_info[1], values=helios.new_info[2::])
+            "", 
+            tk.END, 
+            text=helios.data["Packet id"].get(), 
+            values=[value.get() for value in list(helios.data.values())[:-1:]])
+        
         self.treeview.yview_moveto(1)
