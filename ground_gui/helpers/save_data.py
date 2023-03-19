@@ -9,7 +9,7 @@ def save_data(data):
     date = date_time_now.strftime("%d/%m/%Y %H:%M:%S")
     file_name = date_time_now.strftime("%d_%m_%Y_%H_%M_%S")
 
-    file_path = askdirectory(initialdir="./")
+    file_path = askdirectory(initialdir="./", title="Select a folder")
 
     with open(f"{file_path}/{file_name}.txt", "w") as my_file:
         my_file.write(f"# --- {date} --- #")
@@ -33,7 +33,7 @@ def read_data():
 
 def browseFiles():
     filename = askopenfilename(initialdir="./",
-                               title="Select a File",
+                               title="Select a file",
                                filetypes=(("Text files",
                                            "*.txt*"),
                                           ("all files",

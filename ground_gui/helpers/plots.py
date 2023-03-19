@@ -11,7 +11,6 @@ class Plots:
     def create_figure(self):
 
         temp_press_time_fig = figure(figsize=(8, 8))
-        temp_press_time_fig.suptitle("Plots")
         temp_press_time_fig.set_facecolor("#F0F0F0")
 
         return temp_press_time_fig

@@ -1,2 +1,3 @@
 matplotlib
 serial
+pygame

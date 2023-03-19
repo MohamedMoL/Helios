@@ -2,6 +2,7 @@ from cansat_data import helios
 from plots import Plots
 from save_data import save_data, read_data
 import tkinter as tk
+from cansat3d import cansat3D
 
 
 class Data_page(tk.Frame):
@@ -26,6 +27,8 @@ class Data_page(tk.Frame):
         self.create_buttons()
 
         self.plots.set_plots(self)
+
+        cansat3D(self).grid(row=0, column=7)
 
     def create_labels(self):
         # ------------- Packet ID value + label ------------- #
