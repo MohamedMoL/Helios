@@ -4,6 +4,15 @@ Helios is a can-sized satellite development team participating the [Esero CanSat
 
 The Helios satellite is developed by a team of 6 people and a mentor, we're not going to disclose team members or the development location yet.
 
+# Roadmap
+The Arduino Firmware has the codename NyanSat. Versioning format: letter+number, e.g. a1, a2
+
+Any version starting in version A, its code will primarily focus on getting a correct output on all sensor data.
+
+Any version starting in version B, its code will focus on the correct transmission of data over radio
+
+Any version starting with letter B or C will try to implement transmission redundancy, like error correction and acknowledgement system.
+
 # License
 Pending license
 

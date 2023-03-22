@@ -1,38 +1,35 @@
+#include <TinyGPSPlus.h>
 #include <SoftwareSerial.h>
-#include <TinyGPS++.h>
-#include <AltSoftSerial.h>
-
-SoftwareSerial gps_serial(2, 3);
-AltSoftSerial radio;
 
 TinyGPSPlus gps;
+SoftwareSerial gps_serial(2, 3);
 
 void setup()
 {
-    Serial.begin(9600);
-    gps_serial.begin(9600);
+  Serial.begin(9600);
+  gps_serial.begin(9600);
+  Serial.println(F("gps_code_test.ino"));
+  Serial.println();
 }
 
-void loop() { 
+void loop()
+{
+  // This sketch displays information every time a new sentence is correctly encoded.
   while (gps_serial.available() > 0)
-  {
-    char r = gps_serial.read();
-    gps.encode(r);
-    Serial.print(r);
-  }
-
-  if (gps.location.isValid()) {
-    float lat = (float)gps.location.lat();
-    float lng = (float)gps.location.lng();
-    Serial.println(lat);
-    Serial.println(lng);
-    radio.println(lat);
-    radio.println(lng);
-  } else {
-    Serial.println("Invalid GPS data");
-    radio.println("Invalid GPS data");
-  }
-  
-  //Serial.println("Waiting 1s");
-  delay(1000);
+    if (gps.encode(gps_serial.read()))
+    {
+        Serial.print(F("Location: ")); 
+        if (gps.location.isValid())
+        {
+          Serial.print(gps.location.lat(), 6);
+          Serial.print(F(","));
+          Serial.print(gps.location.lng(), 6);
+        }
+        else
+        {
+          Serial.print(F("INVALID"));
+        }
+      
+        Serial.println();
+    }
 }

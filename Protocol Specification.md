@@ -34,8 +34,11 @@ The software onboard will collect the following data:
 | AccelerationX         | Float         | MPU6050: Acceleration on X axis, in g forces        |
 | AccelerationY         | Float         | MPU6050: Acceleration on Y axis, in g forces        |
 | AccelerationZ         | Float         | MPU6050: Acceleration on Z axis, in g forces        |
-| Latitude              | Float         | NEO-M8N: GCS in degrees                             |
-| Longitude             | Float         | NEO-M8N: GCS in degrees                             |
+| AngleX                | Float         | MPU6050: Angle on X axis (Pitch), in degrees        |
+| AngleY                | Float         | MPU6050: Angle on Y axis (Roll), in degrees         |
+| AngleZ                | Float         | MPU6050: Angle on Z axis (Yaw), in degrees          |
+| Latitude              | Double        | NEO-M8N: GCS in degrees                             |
+| Longitude             | Double        | NEO-M8N: GCS in degrees                             |
 | UVIndex               | Float         | SI1145: UV Index                                    |
 
 # Reed-Solomon Configuration
@@ -45,13 +48,15 @@ The software onboard will collect the following data:
 Which means 148 characters are taken up by the payload, and the 48 remaining characters are for error correction.
 
 The payload can have up to 24 erratas before it becomes unrepairable.
+
+*1 Byte = 1 Character
 # Text
 
 ## Packet Payload
 
 The plain data MUST be an **ASCII** encoded string, an entry of CSV MUST display the data entries in the following order:
 
-`ID,Time,Pressure,Temperature,VelocityRotationX,VelocityRotationY,VelocityRotationZ,AccelerationX,AccelerationY,AccelerationZ,Latitude,Longitude,UVIndex`
+`ID,Time,Pressure,Temperature,VelocityRotationX,VelocityRotationY,VelocityRotationZ,AccelerationX,AccelerationY,AccelerationZ,AngleX,AngleY,AngleZ,Latitude,Longitude,UVIndex`
 
 ## Payload Encryption
 
@@ -66,4 +71,39 @@ Reed-Solomon error correction codes will be added to the to the end of the plain
 `[Text Payload][Reed-Solomon ECC of Text Payload][CRLF]`
 # Binary
 
-Not implemented yet
+Group Name in ASCII (Header) + Payload [+ ECC]
+
+## Group Name (Header)
+
+The group name is an arbitrary name, it must be in ASCII alphabet, lowercase or uppercase characters.
+The header will be used for tracking and synchronizing packet reception.
+
+## Payload
+
+The payload consists of the following data, in order:
+
+| Order | Name                  | Format (C)    | Size    |
+|-------|-----------------------|---------------|---------|
+|   1   | Time                  | Unsigned Long | 4 Bytes |
+|   2   | Pressure              | Float         | 4 Bytes |
+|   3   | Temperature           | Float         | 4 Bytes |
+|   4   | VelocityRotationX     | Float         | 4 Bytes |
+|   5   | VelocityRotationY     | Float         | 4 Bytes |
+|   6   | VelocityRotationZ     | Float         | 4 Bytes |
+|   7   | AccelerationX         | Float         | 4 Bytes |
+|   8   | AccelerationY         | Float         | 4 Bytes |
+|   9   | AccelerationZ         | Float         | 4 Bytes |
+|   10  | AngleX                | Float         | 4 Bytes |
+|   11  | AngleY                | Float         | 4 Bytes |
+|   12  | AngleZ                | Float         | 4 Bytes |
+|   13  | Latitude              | Double        | 8 Bytes |
+|   14  | Longitude             | Double        | 8 Bytes |
+|   15  | UVIndex               | Float         | 4 Bytes |
+
+The payload MUST have a size of 68 bytes.
+
+## Error correction
+
+ECC Codes will be added at the final, using the same configuration mentioned above.
+
+ECC Codes must have a size of 48 Bytes.
