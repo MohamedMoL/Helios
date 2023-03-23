@@ -1,15 +1,12 @@
-import pygame
-from math import sin, cos
-from numpy import dot, pi
+from pygame import display, draw
+from math import sin, cos, radians
+from numpy import dot
 
 
 class pygame_cansat:
     def __init__(self, parent):
         self.parent = parent
-        self.ROTATE_SPEED = 0.03
-        # self.ROTATE_SPEED = pi/4
-        self.window = pygame.display.set_mode( (self.parent.WIDTH, self.parent.HEIGHT) )
-        self.clock = pygame.time.Clock()
+        self.window = display.set_mode((self.parent.WIDTH, self.parent.HEIGHT))
 
         self.projection_matrix = [[1, 0, 0],
                             [0, 1, 0],
@@ -30,7 +27,7 @@ class pygame_cansat:
         self.angle_x = self.angle_y = self.angle_z = 0
 
     def move(self):
-        self.window.fill((0,0,0))
+        self.window.fill((255, 255, 255))
 
         rotation_x = [[1, 0, 0],
                         [0, cos(self.angle_x), -sin(self.angle_x)],
@@ -58,34 +55,22 @@ class pygame_cansat:
             y = (projected2d[1][0] * self.scale) + self.parent.HEIGHT/2
 
             points.append((x, y))
-            # pygame.draw.circle(window, (255, 0, 0), (x, y), 5)
 
         for p in range(4):
             self.connect_points(p, (p+1) % 4, points)
             self.connect_points(p+4, (p+1) % 4 + 4, points)
             self.connect_points(p, p+4, points)
                 
-        pygame.display.update()
+        display.update()
         self.parent.update()
     
     def connect_points(self, i, j, points):
-        pygame.draw.line(self.window, (255, 255, 255), points[i] , points[j])
+        draw.line(self.window, (0, 0, 0), points[i] , points[j])
 
-    def rotate_cube(self, char):
-        if char == "r":
-            self.angle_y = self.angle_x = self.angle_z = 0
-        if char == "a":
-            self.angle_y += self.ROTATE_SPEED
-        if char == "d":
-            self.angle_y -= self.ROTATE_SPEED      
-        if char == "w":
-            self.angle_x += self.ROTATE_SPEED
-        if char == "s":
-            self.angle_x -= self.ROTATE_SPEED
-        if char == "q":
-            self.angle_z -= self.ROTATE_SPEED
-        if char == "e":
-            self.angle_z += self.ROTATE_SPEED
+    def rotate_cube(self, pitch, roll, yaw):
+        self.angle_x = radians(pitch)
+        self.angle_y = radians(roll)
+        self.angle_z = radians(yaw)
 
         self.move()
     

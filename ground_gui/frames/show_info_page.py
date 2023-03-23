@@ -13,7 +13,7 @@ class Show_info_page(tk.Frame):
 
         # Treeview dimensions
         treeview_height = int(self.winfo_screenheight() / 10 * 8.5)
-        column_width = int(self.winfo_screenwidth() / 14)
+        column_width = int(self.winfo_screenwidth() / 17)
 
         # Create the frame that will contain the treeview
         container = tk.Frame(
@@ -62,7 +62,7 @@ class Show_info_page(tk.Frame):
         self.treeview.insert(
             "", 
             tk.END, 
-            text=helios.data["Packet id"].get(), 
-            values=[value.get() for value in list(helios.data.values())[:-1:]])
+            text=helios.packet_id.get(),
+            values=[value.get() for value in helios.data.values()])
         
         self.treeview.yview_moveto(1)

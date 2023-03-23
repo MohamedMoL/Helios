@@ -3,7 +3,7 @@ from cansat_data import helios
 from show_info_page import Show_info_page
 from updated_data_page import Data_page
 from home import Home
-from tkinter import Tk, Frame, DoubleVar
+from tkinter import Tk, Frame
 
 
 class window(Tk):
@@ -26,7 +26,7 @@ class window(Tk):
         container.pack()
 
         # Changes values to StringVar
-        helios.data = {key: DoubleVar(value=0) for key in helios.data.keys()}
+        helios.transform_variable_to_tkinterVar()
 
         # -------- Page changing --------- #
         self.frames = {"Home": "", "Data Page": "", "Show Info": ""}

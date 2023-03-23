@@ -17,7 +17,6 @@ class cansat3D(Frame):
 
         self.pygame_rotate = pygame_cansat(self)
 
-        controller.controller.bind('<Key>', self.bind_key)
-        
-    def bind_key(self, event):
-        self.pygame_rotate.rotate_cube(event.char)
+    def rotate_cube(self, pitch, roll, yaw):
+        self.pygame_rotate.rotate_cube(pitch, roll, yaw)
+
