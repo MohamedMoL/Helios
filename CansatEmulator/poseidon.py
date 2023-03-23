@@ -26,6 +26,7 @@ ASCII_ART = \
 ~~~~~~~~~~~~~~~~~~~~
 '''
 
+# MOTD Message
 try:
     motd_path = (Path(__file__).parent / "motdlist")
     motdfile = open(str(motd_path), "r")
@@ -36,17 +37,11 @@ except:
     pass
 
 EMULATOR_CONFIG = get_config()
-
 CNC_INTERFACE = "\\\\.\\POSEIDON69"
-
 packet_count = 0
-
 RSCODEC = reedsolo.RSCodec(48, 196)
-
-
 class NotImplementedException(Exception):
     pass
-
 
 class SensorData():
     def __init__(self):
@@ -54,8 +49,7 @@ class SensorData():
         self.ID = "Helios"
         packet_count += 1000
         self.time = packet_count
-        #self.Altitude = round(uniform(0, 1000), 2)
-        self.Pressure = round(uniform(1000000, 10000000), 2)
+        self.Pressure = round(uniform(100000, 102000), 2)
         self.Temperature = round(uniform(-20, 85), 2)
         self.VelocityRotationX = round(uniform(0, 16), 2)
         self.VelocityRotationY = round(uniform(0, 16), 2)
@@ -63,10 +57,11 @@ class SensorData():
         self.AccelerationX = round(uniform(0, 4), 2)
         self.AccelerationY = round(uniform(0, 4), 2)
         self.AccelerationZ = round(uniform(0, 4), 2)
-        #self.Latitude = uniform(-90, 90)
-        #self.Longitude = uniform(-180, 180)
-        self.Latitude = "NAN"
-        self.Longitude = "NAN"
+        self.AngleX = round(uniform(0, 360), 2)
+        self.AngleY = round(uniform(0, 360), 2)
+        self.AngleZ = round(uniform(0, 360), 2)
+        self.Latitude = uniform(-90, 90)
+        self.Longitude = uniform(-180, 180)
         self.UVIndex = round(uniform(0, 14), 2)
 
     def construct_binary_payload(self) -> bytes:

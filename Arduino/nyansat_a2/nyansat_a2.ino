@@ -50,7 +50,7 @@ void loop()
         if (gps.encode(Serial.read()))
         {
             if (gps.location.isValid()) {
-                latitude = gps.location.lat(); // Conversion with loss
+                latitude = gps.location.lat();
                 longitude = gps.location.lng();
             }
         }

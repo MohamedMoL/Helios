@@ -76,7 +76,7 @@ Group Name in ASCII (Header) + Payload [+ ECC]
 ## Group Name (Header)
 
 The group name is an arbitrary name, it must be in ASCII alphabet, lowercase or uppercase characters.
-The header will be used for tracking and synchronizing packet reception.
+The header will be used for tracking and synchronizing packet reception. (Default: "Helios")
 
 ## Payload
 
