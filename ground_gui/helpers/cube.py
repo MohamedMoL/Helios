@@ -57,15 +57,14 @@ class pygame_cansat:
             points.append((x, y))
 
         for p in range(4):
-            self.connect_points(p, (p+1) % 4, points)
-            self.connect_points(p+4, (p+1) % 4 + 4, points)
-            self.connect_points(p, p+4, points)
+            self.connect_points(p, (p+1) % 4, points, (255, 0, 0))
+            self.connect_points(p+4, (p+1) % 4 + 4, points, (0, 0, 255))
+            self.connect_points(p, p+4, points, (0, 255, 0))
                 
         display.update()
-        self.parent.update()
     
-    def connect_points(self, i, j, points):
-        draw.line(self.window, (0, 0, 0), points[i] , points[j])
+    def connect_points(self, i, j, points, color):
+        draw.line(self.window, color, points[i] , points[j], 2)
 
     def rotate_cube(self, pitch, roll, yaw):
         self.angle_x = radians(pitch)

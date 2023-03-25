@@ -29,18 +29,15 @@ class window(Tk):
         helios.transform_variable_to_tkinterVar()
 
         # -------- Page changing --------- #
-        self.frames = {"Home": "", "Data Page": "", "Show Info": ""}
-        for key, frame in zip(self.frames.keys(), (Home, Data_page, Show_info_page)):
+        self.frames = {"Home": Home, "Data Page": Data_page, "Show Info": Show_info_page}
+        for key, frame in zip(self.frames.keys(), self.frames.values()):
 
-            acual_frame = frame(container, self)
+            self.frames[key] = frame(container, self)
 
-            self.frames[key] = acual_frame
-
-            acual_frame.grid(row=0, column=0, sticky="nsew")
+            self.frames[key].grid(row=0, column=0, sticky="nsew")
 
         self.show_frame("Home")
 
     def show_frame(self, cont):
 
-        frame = self.frames[cont]
-        frame.tkraise()  # Move the frame over other frames
+        self.frames[cont].tkraise()  # Move the frame over other frames

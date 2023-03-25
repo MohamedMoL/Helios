@@ -5,9 +5,11 @@ from tkinter import DoubleVar
 
 class cansat:
     def __init__(self):
+        
         self.infinite_loop = False
+
         """ 
-        --------------- The order of the data fields is important ---------------
+        --------------- The order of the data fields is important --------------
         ID,Time,Pressure,Temperature,VelocityRotationX,VelocityRotationY,
         VelocityRotationZ,AccelerationX,AccelerationY,AccelerationZ,AngleX,
         AngleY,AngleZ,Latitude,Longitude,UVIndex
@@ -20,7 +22,7 @@ class cansat:
                     "Length", "UV index", "Altitude"]
                     
 
-        self.data = {key: "0" for key in self.keys}
+        self.data = 0 # {key: "0" for key in self.keys}
         self.packet_id = 0
 
         self.lists = {key: [] for key in self.keys}
@@ -58,15 +60,15 @@ class cansat:
         arduino.close()
     
     def transform_variable_to_tkinterVar(self):
-        self.data = {key: DoubleVar(value=0) for key in helios.data.keys()}
+        self.data = {key: DoubleVar(value=0) for key in helios.keys}
         self.packet_id = DoubleVar(value=0)
 
     def start_loop(self, update_plots, insert_row, rotate_cube):
         if not helios.infinite_loop:
             helios.infinite_loop = True
-            self._update_thread = Thread(
+            _update_thread = Thread(
                 target=helios.update_data_cansat, args=(update_plots, insert_row, rotate_cube))
-            self._update_thread.start()
+            _update_thread.start()
 
     def stop_loop(self):
         helios.infinite_loop = False

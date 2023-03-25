@@ -19,14 +19,14 @@ class Home(Frame):
         label = Label(self, text="Home")
         label.pack(pady=10, padx=10)
 
-        button1 = Button(self, text="Data page",
+        go_to_data_page = Button(self, text="Data page",
                          command=lambda: controller.show_frame("Data Page"))
-        button1.pack(pady=10, padx=10)
+        go_to_data_page.pack(pady=10, padx=10)
 
-        button2 = Button(self, text="Show info",
+        go_to_info_table_page = Button(self, text="Show info",
                          command=lambda: controller.show_frame("Show Info"))
-        button2.pack(pady=10, padx=10)
+        go_to_info_table_page.pack(pady=10, padx=10)
 
-        button4 = Button(self, text="Quit",
+        close_window = Button(self, text="Quit",
                          command=lambda: controller.quit())
-        button4.pack(pady=10, padx=10)
+        close_window.pack(pady=10, padx=10)

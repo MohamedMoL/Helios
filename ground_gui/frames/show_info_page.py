@@ -1,8 +1,8 @@
 from cansat_data import helios
 from tkinter.ttk import Style, Treeview, Scrollbar
-import tkinter as tk
+from tkinter import Frame, Button
 
-class Show_info_page(tk.Frame):
+class Show_info_page(Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
 
@@ -16,7 +16,7 @@ class Show_info_page(tk.Frame):
         column_width = int(self.winfo_screenwidth() / 17)
 
         # Create the frame that will contain the treeview
-        container = tk.Frame(
+        container = Frame(
             self, width=self.winfo_screenwidth(), height=treeview_height)
 
         container.pack()
@@ -27,9 +27,9 @@ class Show_info_page(tk.Frame):
             container, columns=helios.keys)
 
         # Scrollbar instance + config
-        vscrollbar = Scrollbar(self.treeview, orient=tk.VERTICAL)
+        vscrollbar = Scrollbar(self.treeview, orient="vertical")
         vscrollbar.config(command=self.treeview.yview)
-        vscrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        vscrollbar.pack(side="right", fill="y")
 
         # Treeview config
         self.treeview.config(yscrollcommand=vscrollbar.set)
@@ -50,18 +50,18 @@ class Show_info_page(tk.Frame):
         container.pack_propagate(0)
 
         # Buttons instances
-        back_home_button = tk.Button(self, text="Back to Home",
+        back_home_button = Button(self, text="Back to Home",
                                      command=lambda: controller.show_frame("Home"))
         back_home_button.pack(padx=20, pady=20, side="top")
 
-        data_page_button = tk.Button(self, text="Data page",
+        data_page_button = Button(self, text="Data page",
                                      command=lambda: controller.show_frame("Data Page"))
         data_page_button.pack(padx=20, side="top")
 
     def insert_row(self):
         self.treeview.insert(
             "", 
-            tk.END, 
+            "end", 
             text=helios.packet_id.get(),
             values=[value.get() for value in helios.data.values()])
         
