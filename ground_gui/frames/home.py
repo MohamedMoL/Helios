@@ -5,19 +5,14 @@ class Home(Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
 
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-
         # Make the window use full screen
-        self.config(width=screen_width, height=screen_height)
-        self.pack_propagate(0)
+        self.config(width=self.winfo_screenwidth(), height=self.winfo_screenheight())
 
         label = Label(self, image=controller.logo)
         label.image = controller.logo
         label.place(relx=0.5, rely=0.5, anchor='center')
 
-        label = Label(self, text="Home")
-        label.pack(pady=10, padx=10)
+        Label(self, text="Home").pack(pady=10, padx=10)
 
         go_to_data_page = Button(self, text="Data page",
                          command=lambda: controller.show_frame("Data Page"))

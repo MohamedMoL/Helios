@@ -40,7 +40,7 @@ class Plots:
 
     def set_plots(self, tk_frame):
         self.canvas = FigureCanvasTkAgg(self.data_fig, tk_frame)
-        self.canvas.get_tk_widget().grid(pady=20, row=0, rowspan=10, column=20)
+        self.canvas.get_tk_widget().grid(row=0, rowspan=10, column=20)
 
     def update_plots(self, ids, temperatures, pressures):
         for current_plot in self.plots:

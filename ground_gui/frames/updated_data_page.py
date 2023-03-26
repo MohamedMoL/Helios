@@ -39,112 +39,66 @@ class Data_page(Frame):
         self.cansat3D = cansat3D(self.cansat3D_frame)
 
         self.cansat3D.grid(row=0, column=0, rowspan=4)
-        self.create_angles_labels()
 
+    def create_label_structure(self, frame, lab_text, text_variable, lab_row, lab_col, lab_height=0, lab_width=0):
+        Label(frame, text=lab_text, height=lab_height).grid(row=lab_row, column=lab_col)
+        Label(frame, textvariable=text_variable, width=lab_width).grid(
+            row=lab_row, column=lab_col + 1, padx=10, pady=10)
+    
     def create_labels(self):
         # ------------- Packet ID value + label ------------- #
-        Label(self.labels_buttons_frame, text="ID", height=3).grid(row=0, column=0)
-        Label(self.labels_buttons_frame, textvariable=helios.packet_id).grid(
-            row=0, column=1, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "ID", helios.packet_id, 0, 0, lab_height=3)
         
         # ------------- Time value + label ------------- #
-        Label(self.labels_buttons_frame, text="Time(ms)", height=3).grid(row=1, column=0)
-        Label(self.labels_buttons_frame, textvariable=helios.data["Time"], width=15).grid(
-            row=1, column=1, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "Time(ms)", helios.data["Time"], 1, 0, lab_height=3, lab_width=15)
 
         # ------------- Altitude value + label ------------- #
-        Label(self.labels_buttons_frame,
-                 text="Altitude(m)", height=3).grid(row=2, column=0)
-        Label(self.labels_buttons_frame, textvariable=helios.data["Altitude"]).grid(
-            row=2, column=1, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "Altitude(m)", helios.data["Altitude"], 2, 0, lab_height=3)
 
         # ------------- Pressure value + label ------------- #
-        Label(self.labels_buttons_frame,
-                 text="Pressure(Pa)", height=3).grid(row=3, column=0)
-        Label(self.labels_buttons_frame, textvariable=helios.data["Pressure"]).grid(
-            row=3, column=1, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "Pressure(Pa)", helios.data["Pressure"], 3, 0, lab_height=3)
 
         # ------------- Temperature value + label ------------- #
-        Label(self.labels_buttons_frame,
-                 text="Temperature(ºC)", height=3).grid(row=4, column=0)
-        Label(self.labels_buttons_frame, textvariable=helios.data["Temperature"]).grid(
-            row=4, column=1, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "Temperature(ºC)", helios.data["Temperature"], 4, 0, lab_height=3)
 
         # ------------- RotationX value + label ------------- #
-        Label(self.labels_buttons_frame,
-                 text="RotationX(deg/s^2)").grid(row=0, column=2)
-        Label(self.labels_buttons_frame, textvariable=helios.data["RotationX"], width=15).grid(
-            row=0, column=3, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "RotationX(deg/s^2)", helios.data["RotationX"], 0, 2, lab_height=3, lab_width=15)
 
         # ------------- RotationY value + label ------------- #
-        Label(self.labels_buttons_frame,
-                 text="RotationY(deg/s^2)").grid(row=1, column=2)
-        Label(self.labels_buttons_frame, textvariable=helios.data["RotationY"]).grid(
-            row=1, column=3, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "RotationY(deg/s^2)", helios.data["RotationY"], 1, 2)
 
         # ------------- RotationZ value + label ------------- #
-        Label(self.labels_buttons_frame,
-                 text="RotationZ(deg/s^2)").grid(row=2, column=2)
-        Label(self.labels_buttons_frame, textvariable=helios.data["RotationZ"]).grid(
-            row=2, column=3, padx=10, pady=10, sticky="EW")
+        self.create_label_structure(self.labels_buttons_frame, "RotationZ(deg/s^2)", helios.data["RotationZ"], 2, 2)
 
         # ------------- AccelerationX value + label ------------- #
-        Label(self.labels_buttons_frame,
-                 text="AccelerationX(m/s^2)").grid(row=3, column=2)
-        Label(self.labels_buttons_frame, textvariable=helios.data["AccelerationX"]).grid(
-            row=3, column=3, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "AccelerationX(m/s^2)", helios.data["AccelerationX"], 3, 2)
 
         # ------------- AccelerationY value + label ------------- #
-        Label(self.labels_buttons_frame,
-                 text="AccelerationY(m/s^2)").grid(row=4, column=2)
-        Label(self.labels_buttons_frame, textvariable=helios.data["AccelerationY"]).grid(
-            row=4, column=3, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "AccelerationY(m/s^2)", helios.data["AccelerationY"], 4, 2)
 
         # ------------- AccelerationZ value + label ------------- #
-        Label(self.labels_buttons_frame,
-                 text="AccelerationZ(m/s^2)").grid(row=0, column=4)
-        Label(self.labels_buttons_frame, textvariable=helios.data["AccelerationZ"]).grid(
-            row=0, column=5, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "AccelerationZ(m/s^2)", helios.data["AccelerationZ"], 0, 4)
 
         # ------------- Latitude value + label ------------- #
-        Label(self.labels_buttons_frame,
-                 text="Latitude").grid(row=1, column=4)
-        Label(self.labels_buttons_frame, textvariable=helios.data["Latitude"], width=20).grid(
-            row=1, column=5, padx=10, pady=10, sticky="EW")
+        self.create_label_structure(self.labels_buttons_frame, "Latitude", helios.data["Latitude"], 1, 4, lab_width=20)
 
         # ------------- Length value ------------- #
-        Label(self.labels_buttons_frame,
-                 text="Length").grid(row=2, column=4)
-        Label(self.labels_buttons_frame, textvariable=helios.data["Length"]).grid(
-            row=2, column=5, padx=10, pady=10, sticky="EW")
+        self.create_label_structure(self.labels_buttons_frame, "Length", helios.data["Length"], 2, 4)
 
         # ------------- UV Index ------------- #
-        Label(self.labels_buttons_frame,
-                 text="UV Index").grid(row=3, column=4)
-        Label(self.labels_buttons_frame, textvariable=helios.data["UV index"]).grid(
-            row=3, column=5, padx=10, pady=10)
+        self.create_label_structure(self.labels_buttons_frame, "UV Index", helios.data["UV index"], 3, 4)
         
         # ------------- UV Color ------------- #
         Label(self.labels_buttons_frame, bg="red").grid(row=4, column=4, columnspan=3, sticky="nsew")
 
-    def create_angles_labels(self):
         # ------------- Pitch ------------- #
-        Label(self.cansat3D_frame,
-                 text="Pitch").grid(row=0, column=1)
-        Label(self.cansat3D_frame, textvariable=helios.data["AngleX"], width=8).grid(
-            row=0, column=2, padx=10, pady=10)
+        self.create_label_structure(self.cansat3D_frame, "Pitch", helios.data["AngleX"], 0, 1, lab_width=8)
         
         # ------------- Roll ------------- #
-        Label(self.cansat3D_frame,
-                 text="Roll").grid(row=1, column=1)
-        Label(self.cansat3D_frame, textvariable=helios.data["AngleY"]).grid(
-            row=1, column=2, padx=10, pady=10)
+        self.create_label_structure(self.cansat3D_frame, "Roll", helios.data["AngleY"], 1, 1)
         
         # ------------- Yaw ------------- #
-        Label(self.cansat3D_frame,
-                 text="Yaw").grid(row=2, column=1)
-        Label(self.cansat3D_frame, textvariable=helios.data["AngleZ"]).grid(
-            row=2, column=2, padx=10, pady=10)
+        self.create_label_structure(self.cansat3D_frame, "Yaw", helios.data["AngleZ"], 2, 1)
 
     def create_buttons(self):
         back_home = Button(self.labels_buttons_frame, text="Back to Home",
