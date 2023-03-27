@@ -43,9 +43,9 @@ The software onboard will collect the following data:
 
 # Reed-Solomon Configuration
 
-48 ECC Symbols per 196 characters (bytes)
+48 ECC Symbols per 116 characters (bytes)
 
-Which means 148 characters are taken up by the payload, and the 48 remaining characters are for error correction.
+This means that 68 characters/bytes are taken up by the payload, and the remaining 48 characters/bytes are for error correction.
 
 The payload can have up to 24 erratas before it becomes unrepairable.
 
@@ -58,9 +58,7 @@ The plain data MUST be an **ASCII** encoded string, an entry of CSV MUST display
 
 `ID,Time,Pressure,Temperature,VelocityRotationX,VelocityRotationY,VelocityRotationZ,AccelerationX,AccelerationY,AccelerationZ,AngleX,AngleY,AngleZ,Latitude,Longitude,UVIndex`
 
-## Payload Encryption
-
-In text mode, the packets cannot be encrypted, this mode only exists for debugging purposes.
+Field `ID` will always be `Helios`
 
 ## Error Correction
 
@@ -84,26 +82,28 @@ The payload consists of the following data, in order:
 
 | Order | Name                  | Format (C)    | Size    |
 |-------|-----------------------|---------------|---------|
-|   1   | Time                  | Unsigned Long | 4 Bytes |
-|   2   | Pressure              | Float         | 4 Bytes |
-|   3   | Temperature           | Float         | 4 Bytes |
-|   4   | VelocityRotationX     | Float         | 4 Bytes |
-|   5   | VelocityRotationY     | Float         | 4 Bytes |
-|   6   | VelocityRotationZ     | Float         | 4 Bytes |
-|   7   | AccelerationX         | Float         | 4 Bytes |
-|   8   | AccelerationY         | Float         | 4 Bytes |
-|   9   | AccelerationZ         | Float         | 4 Bytes |
-|   10  | AngleX                | Float         | 4 Bytes |
-|   11  | AngleY                | Float         | 4 Bytes |
-|   12  | AngleZ                | Float         | 4 Bytes |
-|   13  | Latitude              | Double        | 8 Bytes |
-|   14  | Longitude             | Double        | 8 Bytes |
-|   15  | UVIndex               | Float         | 4 Bytes |
+|   1   | Time                  | Unsigned Long | 4 Bytes | 4
+|   2   | Pressure              | Float         | 4 Bytes | 8
+|   3   | Temperature           | Float         | 4 Bytes | 12
+|   4   | VelocityRotationX     | Float         | 4 Bytes | 16
+|   5   | VelocityRotationY     | Float         | 4 Bytes | 20
+|   6   | VelocityRotationZ     | Float         | 4 Bytes | 24
+|   7   | AccelerationX         | Float         | 4 Bytes | 28
+|   8   | AccelerationY         | Float         | 4 Bytes | 32
+|   9   | AccelerationZ         | Float         | 4 Bytes | 36
+|   10  | AngleX                | Float         | 4 Bytes | 40
+|   11  | AngleY                | Float         | 4 Bytes | 44
+|   12  | AngleZ                | Float         | 4 Bytes | 48
+|   13  | Latitude              | Double        | 8 Bytes | 56
+|   14  | Longitude             | Double        | 8 Bytes | 64
+|   15  | UVIndex               | Float         | 4 Bytes | 68
 
 The payload MUST have a size of 68 bytes.
 
 ## Error correction
 
 ECC Codes will be added at the final, using the same configuration mentioned above.
+
+ECC Symbols does NOT include correction code for header name, only the payload.
 
 ECC Codes must have a size of 48 Bytes.
