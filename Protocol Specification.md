@@ -43,9 +43,9 @@ The software onboard will collect the following data:
 
 # Reed-Solomon Configuration
 
-48 ECC Symbols per 116 characters (bytes)
+48 ECC Symbols for 108 characters (bytes)
 
-This means that 68 characters/bytes are taken up by the payload, and the remaining 48 characters/bytes are for error correction.
+This means that 60 characters/bytes are taken up by the payload, and the remaining 48 characters/bytes are for error correction.
 
 The payload can have up to 24 erratas before it becomes unrepairable.
 
@@ -94,11 +94,11 @@ The payload consists of the following data, in order:
 |   10  | AngleX                | Float         | 4 Bytes | 40
 |   11  | AngleY                | Float         | 4 Bytes | 44
 |   12  | AngleZ                | Float         | 4 Bytes | 48
-|   13  | Latitude              | Double        | 8 Bytes | 56
-|   14  | Longitude             | Double        | 8 Bytes | 64
-|   15  | UVIndex               | Float         | 4 Bytes | 68
+|   13  | Latitude              | Float         | 4 Bytes | 52
+|   14  | Longitude             | Float         | 4 Bytes | 56
+|   15  | UVIndex               | Float         | 4 Bytes | 60
 
-The payload MUST have a size of 68 bytes.
+The payload MUST have a size of 60 bytes.
 
 ## Error correction
 

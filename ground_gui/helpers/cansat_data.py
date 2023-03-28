@@ -28,7 +28,7 @@ class cansat:
         self.lists = {key: [] for key in self.keys}
 
     def update_data_cansat(self, update_plots, insert_row, rotate_cube):
-        arduino = Serial("COM3", 9600, timeout=0.01)
+        arduino = Serial("COM4", 9600, timeout=0.01)
         while self.infinite_loop == True:
 
             new_info = arduino.readline().decode("utf-8").strip().split(",")

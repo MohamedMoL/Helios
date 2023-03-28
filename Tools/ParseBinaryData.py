@@ -1,16 +1,17 @@
 #%%
 # [HELIOS]  [Payload]   [ECC]
-#  ASCII     68Bytes   48 Bytes
+#  ASCII     60Bytes   48 Bytes
 import os
 import serial
 import struct
 import reedsolo
 
-HAS_ECC = True
+HAS_ECC = False
 HEADER_NAME = "Helios"
-COM_PORT = "\\\\.\\POSEIDON69"
+COM_PORT = "COM4"
+#COM_PORT = "\\\\.\\POSEIDON69"
 com = serial.Serial(COM_PORT, 9600, timeout=2)
-RSCODEC = reedsolo.RSCodec(48, 116)
+RSCODEC = reedsolo.RSCodec(48, 108)
 
 class SensorData():
     def __init__(self):
@@ -53,7 +54,8 @@ Longitude:\t\t{d.Longitude}
 UVIndex:\t\t{d.UVIndex}"""
     print(data)
     print("Payload:", d.payload.hex())
-    print("ECC:", d.ecc.hex())
+    if d.ecc != None:
+        print("ECC:", d.ecc.hex())
     if d.foundErrors:
         if d.Time == 0xffffffff or d.errataAmount == None:
             print("Unable to recover data from error")
@@ -61,27 +63,28 @@ UVIndex:\t\t{d.UVIndex}"""
             print(f"Found {d.errataAmount} error(s)")
     
 def receive_packet() -> SensorData:
+    new_sd = SensorData()
     com.read_until(b'Helios') # This will read in: (garbage)Helios
     # If no garbase data is found, the length of this will be always 6
     # Helio ASCII word is used for synchronization and a marker for the packet
-    payload = com.read(68)
+    payload = com.read(60)
     if HAS_ECC:
         ecc = com.read(48)
-    new_sd = SensorData()
+        new_sd.ecc = ecc
     new_sd.payload = payload
-    new_sd.ecc = ecc
     try:
         if HAS_ECC:
             packet = payload + ecc
             payload, ecc_symbols, errata_pos = RSCODEC.decode(packet)
             new_sd.foundErrors = (errata_pos != b'')
             new_sd.errataAmount = len(list(errata_pos))
-        format_code = "Lfffffffffffddf"
+        format_code = "Lffffffffffffff"
         unpacked_struct = struct.unpack(format_code, payload)
         for name, val in zip(new_sd.__dict__.keys(), unpacked_struct):
             new_sd.__dict__[name] = val
-    except:
+    except Exception as e:
         new_sd.foundErrors = True
+        print(e)
     return new_sd
 #%%
 def main():
