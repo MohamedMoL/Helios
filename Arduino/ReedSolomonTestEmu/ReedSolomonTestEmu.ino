@@ -1,9 +1,6 @@
-#include <TinyGPS++.h>
-#include <AltSoftSerial.h>
 #include <limits.h>
 #include "RS-FEC.h"
 
-AltSoftSerial radio;
 RS::ReedSolomon<60, 48> rs;
 
 float latitude = NAN;
@@ -30,7 +27,7 @@ struct SensorData {
 
 void setup()
 {
-    radio.begin(9600);
+    Serial.begin(9600);
 }
 
 SensorData CollectSensorData(unsigned long currentTime, float latitude, float longitude) {
@@ -61,12 +58,12 @@ void SendPacket(SensorData &s)
     // Data Transmission, Binary, ECC
 
     // ASCII Header
-    radio.print("Helios,");
+    Serial.print("Helios");
     
     // Payload is already provided by SensorData &s parameter
     
     uint8_t* payloadPtr = reinterpret_cast<uint8_t*>(&s);
-    radio.write(payloadPtr, sizeof(s)); // THIS SHIT WOULDNT WORK, DATA BEING PARSED IS GARBASE
+    Serial.write(payloadPtr, sizeof(s));
 }
 
 void loop()

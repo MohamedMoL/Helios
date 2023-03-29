@@ -6,10 +6,10 @@ import serial
 import struct
 import reedsolo
 
-HAS_ECC = False
+HAS_ECC = True
 HEADER_NAME = "Helios"
-COM_PORT = "COM4"
-#COM_PORT = "\\\\.\\POSEIDON69"
+#COM_PORT = "COM4"
+COM_PORT = "\\\\.\\POSEIDON69"
 com = serial.Serial(COM_PORT, 9600, timeout=2)
 RSCODEC = reedsolo.RSCodec(48, 108)
 
