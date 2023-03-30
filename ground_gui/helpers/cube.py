@@ -26,8 +26,11 @@ class pygame_cansat:
         self.scale = 40
         self.angle_x = self.angle_y = self.angle_z = 0
 
+    def connect_points(self, i, j, points, color):
+        draw.line(self.window, color, points[i] , points[j], 2)
+
     def move(self):
-        self.window.fill((255, 255, 255))
+        self.window.fill((245, 245, 245))
 
         rotation_x = [[1, 0, 0],
                         [0, cos(self.angle_x), -sin(self.angle_x)],
@@ -55,7 +58,7 @@ class pygame_cansat:
             y = (projected2d[1][0] * self.scale) + self.parent.HEIGHT/2
 
             points.append((x, y))
-
+        
         for p in range(4):
             self.connect_points(p, (p+1) % 4, points, (255, 0, 0))
             self.connect_points(p+4, (p+1) % 4 + 4, points, (0, 0, 255))
@@ -63,9 +66,6 @@ class pygame_cansat:
                 
         display.update()
     
-    def connect_points(self, i, j, points, color):
-        draw.line(self.window, color, points[i] , points[j], 2)
-
     def rotate_cube(self, pitch, roll, yaw):
         self.angle_x = radians(pitch)
         self.angle_y = radians(roll)

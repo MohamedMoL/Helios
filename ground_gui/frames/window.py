@@ -16,24 +16,21 @@ class window(Tk):
         # icon = icon.resize((900, 900), Image.ANTIALIAS)
         self.logo = ImageTk.PhotoImage(icon)
 
-        container = Frame(self)  # Will contain all pages
+        container = Frame(self).grid()  # Will contain all pages
         self.wm_title(team_name)  # Set window title
         self.iconphoto(False, self.logo) # Set icon image
 
         # Create a fullscreen window
         self.state("zoomed")
 
-        container.pack()
-
         # Changes values to StringVar
         helios.transform_variable_to_tkinterVar()
 
         # -------- Page changing --------- #
         self.frames = {"Home": Home, "Data Page": Data_page, "Show Info": Show_info_page}
-        for key, frame in zip(self.frames.keys(), self.frames.values()):
+        for key, frame in self.frames.items():
 
             self.frames[key] = frame(container, self)
-
             self.frames[key].grid(row=0, column=0, sticky="nsew")
 
         self.show_frame("Home")

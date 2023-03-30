@@ -15,7 +15,7 @@ class Data_page(Frame):
         self.plots = Plots()
 
         self.show_frame = controller.show_frame  # Refers to the tk.Tk()
-        self.frames_methods = controller.frames
+        self.insert_row = controller.frames
 
         # The frame that will contain all cansat labels and buttons
         self.labels_buttons_frame = Frame(
@@ -32,7 +32,7 @@ class Data_page(Frame):
         # Create all widgets
         self.create_labels()
 
-        self.create_buttons()
+        self.create_buttons(self.labels_buttons_frame)
 
         self.plots.set_plots(self)
 
@@ -100,30 +100,25 @@ class Data_page(Frame):
         # ------------- Yaw ------------- #
         self.create_label_structure(self.cansat3D_frame, "Yaw", helios.data["AngleZ"], 2, 1)
 
-    def create_buttons(self):
-        back_home = Button(self.labels_buttons_frame, text="Back to Home",
-                              command=lambda: self.show_frame("Home"))
-        back_home.grid(row=7, column=0, ipadx=10, ipady=10, pady=30)
+    def create_buttons(self, frame):
+        configuration = {"row":7, "ipadx":10, "ipady":10, "pady":30}
 
-        start_loop_button = Button(self.labels_buttons_frame, text="Start",
-                                      command=lambda: helios.start_loop(
-                                          self.plots.update_plots,
-                                          self.frames_methods["Show Info"].insert_row, 
-                                          self.cansat3D.rotate_cube))
-        start_loop_button.grid(row=7, column=1, ipadx=10, ipady=10)
+        # ----------------- Back Home Button ----------------- #
+        Button(frame, text="Back to Home", command=lambda: self.show_frame("Home")).grid(configuration, column=0)
 
-        stop_loop_button = Button(self.labels_buttons_frame, text="Stop",
-                                     command=lambda: helios.stop_loop())
-        stop_loop_button.grid(row=7, column=2, ipadx=10, ipady=10)
+        # ----------------- Start Loop Button ----------------- #
+        Button(frame, text="Start", command=lambda: helios.start_loop(self.plots.update_plots,
+                                        self.insert_row["Show Info"].insert_row, self.cansat3D.rotate_cube)
+                                        ).grid(configuration, column=1)
 
-        save_data_button = Button(self.labels_buttons_frame, text="Save",
-                                     command=lambda: save_data(helios.lists))
-        save_data_button.grid(row=7, column=3, ipadx=10, ipady=10)
+        # ----------------- Stop Loop Button ----------------- #
+        Button(frame, text="Stop", command=lambda: helios.stop_loop()).grid(configuration, column=2)
 
-        show_info_button = Button(self.labels_buttons_frame, text="Show",
-                                     command=lambda: self.show_frame("Show Info"))
-        show_info_button.grid(row=7, column=4, ipadx=10, ipady=10)
+        # ----------------- Save Data Button ----------------- #
+        Button(frame, text="Save", command=lambda: save_data(helios.lists)).grid(configuration, column=3)
 
-        recover_info_button = Button(self.labels_buttons_frame, text="Recover",
-                                        command=lambda: read_data())
-        recover_info_button.grid(row=7, column=5, ipadx=10, ipady=10)
+        # ----------------- Show Info Button ----------------- #
+        Button(frame, text="Show", command=lambda: self.show_frame("Show Info")).grid(configuration, column=4)
+
+        # ----------------- Recover Info Button ----------------- #
+        Button(frame, text="Recover", command=lambda: read_data()).grid(configuration, column=5)
