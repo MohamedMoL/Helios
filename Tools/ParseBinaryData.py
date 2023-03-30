@@ -18,6 +18,7 @@ class SensorData():
         self.Time = 0xffffffff # 32 bit/4 bytes unsigned long
         self.Pressure = float('nan')
         self.Temperature = float('nan')
+        self.Altitude = float('nan')
         self.VelocityRotationX = float('nan')
         self.VelocityRotationY = float('nan')
         self.VelocityRotationZ = float('nan')
@@ -40,6 +41,7 @@ def DisplayPacket(d : SensorData):
     data = f"""Time:\t\t\t{d.Time}
 Pressure:\t\t{d.Pressure}
 Temperature:\t\t{d.Temperature}
+Altitude:\t\t{d.Altitude}
 VelocityRotationX:\t{d.VelocityRotationX}
 VelocityRotationY:\t{d.VelocityRotationY}
 VelocityRotationZ:\t{d.VelocityRotationZ}
@@ -67,7 +69,7 @@ def receive_packet() -> SensorData:
     com.read_until(b'Helios') # This will read in: (garbage)Helios
     # If no garbase data is found, the length of this will be always 6
     # Helio ASCII word is used for synchronization and a marker for the packet
-    payload = com.read(60)
+    payload = com.read(64)
     if HAS_ECC:
         ecc = com.read(48)
         new_sd.ecc = ecc
@@ -78,7 +80,7 @@ def receive_packet() -> SensorData:
             payload, ecc_symbols, errata_pos = RSCODEC.decode(packet)
             new_sd.foundErrors = (errata_pos != b'')
             new_sd.errataAmount = len(list(errata_pos))
-        format_code = "Lffffffffffffff"
+        format_code = "Lfffffffffffffff"
         unpacked_struct = struct.unpack(format_code, payload)
         for name, val in zip(new_sd.__dict__.keys(), unpacked_struct):
             new_sd.__dict__[name] = val

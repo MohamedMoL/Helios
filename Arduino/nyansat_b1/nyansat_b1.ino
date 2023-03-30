@@ -10,6 +10,7 @@ struct SensorData {
     unsigned long time = ULONG_MAX;
     float pressure = NAN;
     float temperature = NAN;
+    float altitude = NAN;
     float velocityRotationX = NAN;
     float velocityRotationY = NAN;
     float velocityRotationZ = NAN;
@@ -40,7 +41,7 @@ void setup()
     Wire.begin();
     Serial.begin(9600); // GPS
     radio.begin(9600); // Radio
-    radio.println("Initializing Cansat...");
+    //radio.println("Initializing Cansat...");
     bmp.begin(0x76); // BMP280 Pressure and temperature sensor
     bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
                 Adafruit_BMP280::SAMPLING_X2,     /* Temp. oversampling */
@@ -61,6 +62,7 @@ SensorData CollectSensorData(unsigned long currentTime, float latitude, float lo
     currentSensorData.time = currentTime; // Arduino: Power-on timer
     currentSensorData.pressure = bmp.readPressure(); // BMP280: Pressure
     currentSensorData.temperature = bmp.readTemperature(); // BMP280: Temperature
+    currentSensorData.altitude = bmp.readAltitude();
     currentSensorData.velocityRotationX = mpu.getGyroX(); // MPU6050: Angular Velocity X
     currentSensorData.velocityRotationY = mpu.getGyroY(); // MPU6050: Angular Velocity Y
     currentSensorData.velocityRotationZ = mpu.getGyroZ(); // MPU6050: Angular Velocity Z
@@ -82,7 +84,7 @@ void SendPacket(SensorData &s)
     // Data Transmission, Binary, no ECC, ni FIFO queue
     // ASCII Header
     radio.print("Helios");
-    radio.write((uint8_t*)&s, 60);
+    radio.write((uint8_t*)&s, sizeof(SensorData));
 }
 
 void loop()

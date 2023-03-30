@@ -4,6 +4,7 @@ struct SensorData {
     unsigned long time = ULONG_MAX;
     float pressure = NAN;
     float temperature = NAN;
+    float altitude = NAN;
     float velocityRotationX = NAN;
     float velocityRotationY = NAN;
     float velocityRotationZ = NAN;

@@ -43,6 +43,7 @@ SensorData CollectSensorData(unsigned long currentTime, double latitude, double 
     currentSensorData.time = currentTime; // Arduino: Power-on timer
     currentSensorData.pressure = bmp.readPressure(); // BMP280: Pressure
     currentSensorData.temperature = bmp.readTemperature(); // BMP280: Temperature
+    currentSensorData.altitude = bmp.readAltitude(); // Altitude derived from pressure, seaLevelHPA = 1013.25
     currentSensorData.velocityRotationX = mpu.getGyroX(); // MPU6050: Angular Velocity X
     currentSensorData.velocityRotationY = mpu.getGyroY(); // MPU6050: Angular Velocity Y
     currentSensorData.velocityRotationZ = mpu.getGyroZ(); // MPU6050: Angular Velocity Z
@@ -66,6 +67,7 @@ void SendPacket(SensorData s)
     radio.print(s.time); radio.print(",");
     radio.print(s.pressure); radio.print(",");
     radio.print(s.temperature); radio.print(",");
+    radio.print(s.altitude); radio.print(",");
     radio.print(s.velocityRotationX); radio.print(",");
     radio.print(s.velocityRotationY); radio.print(",");
     radio.print(s.velocityRotationZ); radio.print(",");
