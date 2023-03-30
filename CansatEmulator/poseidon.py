@@ -51,6 +51,7 @@ class SensorData():
         self.time = packet_count
         self.Pressure = round(uniform(100000, 102000), 2)
         self.Temperature = round(uniform(-20, 85), 2)
+        self.Altitude = round(uniform(-100, 1100), 2)
         self.VelocityRotationX = round(uniform(0, 16), 2)
         self.VelocityRotationY = round(uniform(0, 16), 2)
         self.VelocityRotationZ = round(uniform(0, 16), 2)
