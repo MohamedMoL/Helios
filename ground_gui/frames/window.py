@@ -24,7 +24,7 @@ class window(Tk):
         self.state("zoomed")
 
         # Changes values to StringVar
-        helios.transform_variable_to_tkinterVar()
+        helios.transform_variables_to_tkinterVar()
 
         # -------- Page changing --------- #
         self.frames = {"Home": Home, "Data Page": Data_page, "Show Info": Show_info_page}

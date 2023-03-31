@@ -18,13 +18,13 @@ class Show_info_page(Frame):
         # Create the frame that will contain the treeview
         container = Frame(
             self, width=self.winfo_screenwidth(), height=treeview_height)
-
         container.pack()
         container.pack_propagate(0)
 
         # Treeview instance
         self.treeview = Treeview(
             container, columns=helios.keys)
+        self.treeview.pack(expand=True, fill="both")
 
         # Scrollbar instance + config
         vscrollbar = Scrollbar(self.treeview, orient="vertical")
@@ -43,11 +43,6 @@ class Show_info_page(Frame):
             self.treeview.heading(i, text=i)
             self.treeview.column(column=i, anchor="center",
                                  width=column_width, stretch=0)
-
-        self.treeview.pack(expand=True, fill="both")
-
-        container.pack()
-        container.pack_propagate(0)
 
         # Buttons instances
         back_home_button = Button(self, text="Back to Home",

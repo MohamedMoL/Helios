@@ -8,6 +8,14 @@ class cansat:
         
         self.infinite_loop = False
 
+        self.uv_color_intervals = {
+            "green": [0, 1, 2],
+            "yellow": [3, 4, 5],
+            "orange": [6, 7],
+            "red": [8, 9, 10],
+            "purple": [11, 12, 13, 14, 15, 16]
+        }
+
         """ 
         --------------- The order of the data fields is important --------------
         ID,Time,Pressure,Temperature,Altitude,VelocityRotationX,VelocityRotationY,
@@ -27,8 +35,8 @@ class cansat:
 
         self.lists = {key: [] for key in self.keys}
 
-    def update_data_cansat(self, update_plots, insert_row, rotate_cube):
-        arduino = Serial("COM4", 9600, timeout=0.01)
+    def update_data_cansat(self):
+        arduino = Serial("COM3", 9600, timeout=0.01)
         while self.infinite_loop == True:
 
             new_info = arduino.readline().decode("utf-8").strip().split(",")
@@ -41,27 +49,16 @@ class cansat:
 
                 self.packet_id.set(self.packet_id.get() + 1)
 
-                update_plots(
-                    self.lists["Time"], self.lists["Temperature"], self.lists["Pressure"])
-
-                insert_row()
-
-                rotate_cube(
-                    self.data["AngleX"].get(),
-                    self.data["AngleY"].get(),
-                    self.data["AngleZ"].get())
-
         arduino.close()
     
-    def transform_variable_to_tkinterVar(self):
+    def transform_variables_to_tkinterVar(self):
         self.data = {key: DoubleVar(value=0) for key in self.keys}
         self.packet_id = DoubleVar(value=0)
 
-    def start_loop(self, update_plots, insert_row, rotate_cube):
+    def start_loop(self):
         if not self.infinite_loop:
             self.infinite_loop = True
-            _update_thread = Thread(
-                target=self.update_data_cansat, args=(update_plots, insert_row, rotate_cube))
+            _update_thread = Thread(target=self.update_data_cansat)
             _update_thread.start()
 
     def stop_loop(self):
