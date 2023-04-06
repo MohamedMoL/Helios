@@ -58,6 +58,6 @@ class Show_info_page(Frame):
             "", 
             "end", 
             text=helios.packet_id.get(),
-            values=[value.get() for value in helios.data.values()])
+            values=[value[1] for value in helios.data.values()])
         
         self.treeview.yview_moveto(1)

@@ -28,10 +28,6 @@ class cansat:
                     "AccelerationX", "AccelerationY", "AccelerationZ",
                     "AngleX", "AngleY", "AngleZ", "Latitude",
                     "Length", "UV index"]
-                    
-
-        self.data = 0 # {key: "0" for key in self.keys}
-        self.packet_id = 0
 
         self.lists = {key: [] for key in self.keys}
 
@@ -44,7 +40,8 @@ class cansat:
             if len(new_info_nums) == 16:  # If new info is received
 
                 for key, value in zip(self.keys, new_info_nums):
-                    self.data[key].set(value)
+                    self.data[key][0].set(value)
+                    self.data[key][1] = value
                     self.lists[key].append(value)
 
                 self.packet_id.set(self.packet_id.get() + 1)
@@ -52,7 +49,7 @@ class cansat:
         arduino.close()
     
     def transform_variables_to_tkinterVar(self):
-        self.data = {key: DoubleVar(value=0) for key in self.keys}
+        self.data = {key: [DoubleVar(value=0), 0] for key in self.keys}
         self.packet_id = DoubleVar(value=0)
 
     def start_loop(self):
