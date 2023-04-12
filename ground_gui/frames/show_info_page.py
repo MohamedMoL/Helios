@@ -45,13 +45,9 @@ class Show_info_page(Frame):
                                  width=column_width, stretch=0)
 
         # Buttons instances
-        back_home_button = Button(self, text="Back to Home",
-                                     command=lambda: controller.show_frame("Home"))
-        back_home_button.pack(padx=20, pady=20, side="top")
+        Button(self, text="Back to Home", command=lambda: controller.show_frame("Home")).pack(pady=20, side="top")
 
-        data_page_button = Button(self, text="Data page",
-                                     command=lambda: controller.show_frame("Data Page"))
-        data_page_button.pack(padx=20, side="top")
+        Button(self, text="Data page", command=lambda: controller.show_frame("Data Page")).pack(side="top")
 
     def insert_row(self):
         self.treeview.insert(

@@ -8,6 +8,13 @@ class Plots:
 
         self.plots = self.create_plots(self.data_fig)
 
+        self.configs = [{"ylabel": "Temperature (ºC)",
+                               "title": "Evolution > Celsius/ms",
+                               "color": "red"}, 
+                               {"ylabel": "Pressure (Pa)",
+                                "title": "Evolution > Pa/ms",
+                                "color": "green"}]
+
     def create_figure(self):
 
         temp_press_time_fig = figure(figsize=(8, 8))
@@ -42,24 +49,16 @@ class Plots:
         self.canvas = FigureCanvasTkAgg(self.data_fig, tk_frame)
         self.canvas.get_tk_widget().grid(row=0, rowspan=10, column=20)
 
-    def update_plots(self, ids, temperatures, pressures):
-        for plot in self.plots: plot.clear() 
-
-        self.update_temperature_plot(ids, temperatures)
-
-        self.update_pressure_plot(ids, pressures)
+    def update_plots(self, ids, info):
+        for plot, conf, data in zip(self.plots, self.configs, info):
+            plot.clear()
+            self.update_each_plot(plot, ids, data, conf)
 
         # Re-draw the plots
         self.canvas.draw()
 
-    def update_temperature_plot(self, ids, temperatures):
-        self.plots[0].set_title('Evolution > Celsius/ms')
-        self.plots[0].set_ylabel('Temperature (ºC)')
-        self.plots[0].set_xlabel('Time (ms)')
-        self.plots[0].plot(ids, temperatures, color="red")
-
-    def update_pressure_plot(self, ids, pressures):
-        self.plots[1].set_title('Evolution > Pa/ms')
-        self.plots[1].set_xlabel('Time (ms)')
-        self.plots[1].set_ylabel('Pressure (Pa)')
-        self.plots[1].plot(ids, pressures, color="green")
+    def update_each_plot(self, plot, ids, data, conf):
+        plot.set_title(conf["title"])
+        plot.set_ylabel(conf["ylabel"])
+        plot.set_xlabel('Time (ms)')
+        plot.plot(ids, data, color=conf["color"])

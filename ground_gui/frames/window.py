@@ -7,12 +7,12 @@ from tkinter import Tk, Frame
 
 
 class window(Tk):
-    def __init__(self, team_name):
+    def __init__(self, team_name, logo_path):
         super().__init__()
 
         self.team_name = team_name
 
-        icon = Image.open("ground_gui/helios_logo.jpeg")
+        icon = Image.open(logo_path)
         # icon = icon.resize((900, 900), Image.ANTIALIAS)
         self.logo = ImageTk.PhotoImage(icon)
 

@@ -36,8 +36,10 @@ class cansat:
         while self.infinite_loop == True:
 
             new_info = arduino.readline().decode("utf-8").strip().split(",")
-            new_info_nums = [float(num) for num in new_info[1::]]
-            if len(new_info_nums) == 16:  # If new info is received
+            
+            if len(new_info) == 17:  # If new info is received
+
+                new_info_nums = [float(num) for num in new_info[1::]]
 
                 for key, value in zip(self.keys, new_info_nums):
                     self.data[key][0].set(value)
