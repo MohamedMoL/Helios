@@ -4,13 +4,13 @@ from sys import path
 from os.path import abspath
 CURRENT_PATH = abspath("")
 if "ground_gui" in CURRENT_PATH:
-    PATH_FRAMES = abspath("frames")
-    PATH_HELPERS = abspath("helpers")
-    logo_path = abspath("helios_logo.jpeg")
+    PATH_FRAMES = f"{CURRENT_PATH}/frames"
+    PATH_HELPERS = f"{CURRENT_PATH}/helpers"
+    logo_path = f"{CURRENT_PATH}/helios_logo.jpeg"
 else:
-    PATH_FRAMES = abspath("ground_gui/frames")
-    PATH_HELPERS = abspath("ground_gui/helpers")
-    logo_path = abspath("ground_gui/helios_logo.jpeg")
+    PATH_FRAMES = f"{CURRENT_PATH}/ground_gui/frames"
+    PATH_HELPERS = f"{CURRENT_PATH}/ground_gui/helpers"
+    logo_path = f"{CURRENT_PATH}/ground_gui/helios_logo.jpeg"
 path.append(PATH_FRAMES)
 path.append(PATH_HELPERS)
 # ------------------------------------------------------------------

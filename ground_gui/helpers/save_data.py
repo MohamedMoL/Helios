@@ -1,5 +1,6 @@
 from datetime import datetime
 from tkinter.filedialog import askopenfilename, askdirectory
+from tkinter.messagebox import askyesno
 from cansat_data import helios
 
 
@@ -20,16 +21,18 @@ def save_data(data):
 
 
 def read_data():
-    file_path = browseFiles()
-    if file_path != "":
-        with open(file_path, "r") as my_file:
-            info = my_file.readlines()
-            if info[0][0] == "#":
-                for data in info[1::]:
-                    cansat_data = data.split(":")
-                    cansat_nums = cansat_data[1].strip().split(";")
-                    cansat_nums = [float(num) for num in cansat_nums]
-                    helios.lists[cansat_data[0]] = cansat_nums
+    permission_for_recover = askyesno(message="You won't be able to read more data from Cansat. Are you sure?", 
+             title="Recover data warning")
+    if permission_for_recover:
+        file_path = browseFiles()
+        if file_path != "":
+            with open(file_path, "r") as my_file:
+                info = my_file.readlines()
+                if info[0][0] == "#":
+                    for data in info[1::]:
+                        cansat_data = data.split(":")
+                        cansat_nums = [float(num) for num in cansat_data[1].strip().split(";")]
+                        helios.update_all_data_fields(cansat_data[0], cansat_nums)
 
 def browseFiles():
     filename = askopenfilename(initialdir="./",

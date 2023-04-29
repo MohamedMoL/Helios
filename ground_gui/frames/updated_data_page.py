@@ -40,7 +40,10 @@ class Data_page(Frame):
 
         self.plots.update_plots(helios.lists["Time"], [helios.lists["Temperature"], helios.lists["Pressure"]])
 
-        self.insert_row["Show Info"].insert_row()
+        if helios.updateable:
+            self.insert_row["Show Info"].insert_row()
+        elif not helios.updateable:
+            self.insert_row["Show Info"].insert_all_rows()
         
         self.cansat3D.rotate_cube(helios.data["AngleX"][1],
                     helios.data["AngleY"][1],

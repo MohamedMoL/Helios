@@ -4,6 +4,7 @@ from show_info_page import Show_info_page
 from updated_data_page import Data_page
 from home import Home
 from tkinter import Tk, Frame
+from tkinter.messagebox import askyesno
 
 
 class window(Tk):
@@ -11,9 +12,10 @@ class window(Tk):
         super().__init__()
 
         self.team_name = team_name
+        self.resizable(True, True)
+        self.protocol("WM_DELETE_WINDOW", self.close_window)
 
         icon = Image.open(logo_path)
-        # icon = icon.resize((900, 900), Image.ANTIALIAS)
         self.logo = ImageTk.PhotoImage(icon)
 
         container = Frame(self).grid()  # Will contain all pages
@@ -36,5 +38,13 @@ class window(Tk):
         self.show_frame("Home")
 
     def show_frame(self, cont):
-
         self.frames[cont].tkraise()  # Move the frame over other frames
+
+    def close_window(self):
+        if helios.infinite_loop:
+            answer = askyesno(message="Stop the data reading. Remember save the data. Are you sure?", title="Close window")
+            if answer:
+                helios.stop_loop()
+                self.quit()
+        elif helios.infinite_loop == False:
+            self.quit()

@@ -16,4 +16,4 @@ class Home(Frame):
 
         Button(self, text="Show info", command=lambda: controller.show_frame("Show Info")).pack(pady=10)
 
-        Button(self, text="Quit", command=lambda: controller.quit()).pack(pady=10)
+        Button(self, text="Quit", command=lambda: controller.close_window()).pack(pady=10)

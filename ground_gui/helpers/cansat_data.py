@@ -8,6 +8,8 @@ class cansat:
         
         self.infinite_loop = False
 
+        self.updateable = True
+
         self.uv_color_intervals = {
             "green": [0, 1, 2],
             "yellow": [3, 4, 5],
@@ -55,7 +57,7 @@ class cansat:
         self.packet_id = DoubleVar(value=0)
 
     def start_loop(self):
-        if not self.infinite_loop:
+        if not self.infinite_loop and self.updateable:
             self.infinite_loop = True
             _update_thread = Thread(target=self.update_data_cansat)
             _update_thread.start()
@@ -63,5 +65,16 @@ class cansat:
     def stop_loop(self):
         self.infinite_loop = False
 
+    def update_all_data_fields(self, field, data_list):
+        self.lists[field] = data_list
+
+        self.data[field][0].set(data_list[-1])
+        self.data[field][1] = data_list[-1]
+
+        if field == self.keys[-1]: 
+            self.updateable = False
+            self.infinite_loop = False
+            self.packet_id.set(len(data_list))
+            
 
 helios = cansat()

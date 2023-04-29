@@ -57,3 +57,16 @@ class Show_info_page(Frame):
             values=[value[1] for value in helios.data.values()])
         
         self.treeview.yview_moveto(1)
+
+    def insert_all_rows(self):
+        all_data_nums = [[value[id] for value in helios.lists.values()] for id in range(0, len(helios.lists["Time"]))]
+        print(all_data_nums)
+
+        for packet_id, cansat_values in enumerate(all_data_nums, start=1):
+            self.treeview.insert(
+            "", 
+            "end", 
+            text=packet_id,
+            values=cansat_values)
+        
+        self.treeview.yview_moveto(1)
