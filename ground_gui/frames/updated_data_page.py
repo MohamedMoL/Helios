@@ -129,7 +129,7 @@ class Data_page(Frame):
         Button(frame, text="Stop", command=lambda: helios.stop_loop()).grid(config, column=2)
 
         # ----------------- Save Data Button ----------------- #
-        Button(frame, text="Save", command=lambda: save_data(helios.lists)).grid(config, column=3)
+        Button(frame, text="Save", command=lambda: save_data()).grid(config, column=3)
 
         # ----------------- Show Info Button ----------------- #
         Button(frame, text="Show", command=lambda: self.show_frame("Show Info")).grid(config, column=4)

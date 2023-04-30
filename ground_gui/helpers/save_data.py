@@ -4,7 +4,7 @@ from tkinter.messagebox import askyesno
 from cansat_data import helios
 
 
-def save_data(data):
+def save_data():
 
     date_time_now = datetime.now()
     date = date_time_now.strftime("%d/%m/%Y %H:%M:%S")
@@ -12,13 +12,20 @@ def save_data(data):
 
     file_path = askdirectory(initialdir="./", title="Select a folder")
 
+    with open(f"{file_path}/{file_name}.csv", "w") as my_file:
+        my_file.write(f"# --- {date} --- #\n")
+        my_file.write(";".join(helios.keys))
+        all_data_nums = [[value[id] for value in helios.lists.values()] for id in range(0, len(helios.lists["Time"]))]
+        for packet in all_data_nums:
+            my_file.write("\n")
+            my_file.write(";".join([str(num) for num in packet]))
+
     with open(f"{file_path}/{file_name}.txt", "w") as my_file:
         my_file.write(f"# --- {date} --- #")
-        for key in data:
+        for key in helios.lists:
             my_file.write("\n")
             my_file.write(f"{key}:")
-            my_file.write(";".join([str(num) for num in data[key]]))
-
+            my_file.write(";".join([str(num) for num in helios.lists[key]]))
 
 def read_data():
     permission_for_recover = askyesno(message="You won't be able to read more data from Cansat. Are you sure?", 
