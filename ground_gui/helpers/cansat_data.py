@@ -59,8 +59,7 @@ class cansat:
     def start_loop(self):
         if not self.infinite_loop and self.updateable:
             self.infinite_loop = True
-            _update_thread = Thread(target=self.update_data_cansat)
-            _update_thread.start()
+            Thread(target=self.update_data_cansat).start()
 
     def stop_loop(self):
         self.infinite_loop = False

@@ -39,9 +39,9 @@ class Show_info_page(Frame):
         self.treeview.column(column="#0", anchor="center",
                              width=column_width, stretch=0)
 
-        for i in helios.keys:
-            self.treeview.heading(i, text=i)
-            self.treeview.column(column=i, anchor="center",
+        for header in helios.keys:
+            self.treeview.heading(header, text=header)
+            self.treeview.column(column=header, anchor="center",
                                  width=column_width, stretch=0)
 
         # Buttons instances

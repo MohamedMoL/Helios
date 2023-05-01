@@ -44,10 +44,8 @@ class Data_page(Frame):
             self.insert_row["Show Info"].insert_row()
         elif not helios.updateable:
             self.insert_row["Show Info"].insert_all_rows()
-        
-        self.cansat3D.rotate_cube(helios.data["AngleX"][1],
-                    helios.data["AngleY"][1],
-                    helios.data["AngleZ"][1])
+
+        self.cansat3D.start_rotating_loop()
         
         self.update_uv_color(int(helios.data["UV index"][1]))
         

@@ -5,12 +5,14 @@ from numpy import dot
 
 class pygame_cansat:
     def __init__(self, parent):
-        self.parent = parent
-        self.window = display.set_mode((self.parent.WIDTH, self.parent.HEIGHT))
+        self.window = display.set_mode((parent.WIDTH, parent.HEIGHT))
 
         self.projection_matrix = [[1, 0, 0],
                             [0, 1, 0],
                             [0, 0, 0]]
+        
+        self.center_figure_x = parent.WIDTH/2
+        self.center_figure_y = parent.HEIGHT/2
 
         self.cube_points = []
         self.cube_points.append([[-2], [-1], [1]])
@@ -54,19 +56,39 @@ class pygame_cansat:
 
             projected2d = dot(self.projection_matrix, rotated2d)
             
-            x = (projected2d[0][0] * self.scale) + self.parent.WIDTH/2
-            y = (projected2d[1][0] * self.scale) + self.parent.HEIGHT/2
+            x = (projected2d[0][0] * self.scale) + self.center_figure_x
+            y = (projected2d[1][0] * self.scale) + self.center_figure_y
 
             points.append((x, y))
-        
+
+        # --------------- Line drawings --------------- #
+        # Red
+        self.connect_points(0, 1, points, (255, 0, 0))
+        self.connect_points(1, 2, points, (255, 0, 0))
+        self.connect_points(2, 3, points, (255, 0, 0))
+        self.connect_points(3, 0, points, (255, 0, 0))
+        # Blue
+        self.connect_points(4, 5, points, (0, 0, 255))
+        self.connect_points(5, 6, points, (0, 0, 255))
+        self.connect_points(6, 7, points, (0, 0, 255))
+        self.connect_points(7, 4, points, (0, 0, 255))
+        # Green
+        self.connect_points(0, 4, points, (0, 255, 0))
+        self.connect_points(1, 5, points, (0, 255, 0))
+        self.connect_points(2, 6, points, (0, 255, 0))
+        self.connect_points(3, 7, points, (0, 255, 0))
+        # --------------------------------------------- #
+
+        """ This is the same, but in a for loop
         for p in range(4):
             self.connect_points(p, (p+1) % 4, points, (255, 0, 0))
             self.connect_points(p+4, (p+1) % 4 + 4, points, (0, 0, 255))
             self.connect_points(p, p+4, points, (0, 255, 0))
+        """
                 
         display.update()
     
-    def rotate_cube(self, pitch, roll, yaw):
+    def degrees_to_radians(self, pitch, roll, yaw):
         self.angle_x = radians(pitch)
         self.angle_y = radians(roll)
         self.angle_z = radians(yaw)

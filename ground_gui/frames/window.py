@@ -45,6 +45,5 @@ class window(Tk):
             answer = askyesno(message="Stop the data reading. Remember save the data. Are you sure?", title="Close window")
             if answer:
                 helios.stop_loop()
-                self.quit()
-        elif helios.infinite_loop == False:
-            self.quit()
+        self.frames["Data Page"].cansat3D.stop_rotating_loop()
+        self.quit()

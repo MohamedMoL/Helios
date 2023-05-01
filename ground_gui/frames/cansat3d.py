@@ -1,6 +1,9 @@
 from cube import pygame_cansat
+from cansat_data import helios
 from os import environ
 from tkinter import Frame
+from threading import Thread
+from time import sleep
 
 
 class cansat3D(Frame):
@@ -10,13 +13,25 @@ class cansat3D(Frame):
         self.WIDTH = 300
         self.HEIGHT = 300
 
-        embed = Frame(self, width=self.WIDTH, height=self.HEIGHT) # creates embed frame for pygame window
-        embed.pack(side = "left") # packs window to the left
+        self.config(width=self.WIDTH, height=self.HEIGHT)
 
-        environ['SDL_WINDOWID'] = str(embed.winfo_id())
+        environ['SDL_WINDOWID'] = str(self.winfo_id())
 
         self.pygame_rotate = pygame_cansat(self)
 
-    def rotate_cube(self, pitch, roll, yaw):
-        self.pygame_rotate.rotate_cube(pitch, roll, yaw)
+        self.continue_rotating = False
 
+    def rotate_cube(self):
+        while self.continue_rotating:
+            sleep(0.1)
+            self.pygame_rotate.degrees_to_radians(helios.data["AngleX"][1],
+                        helios.data["AngleY"][1],
+                        helios.data["AngleZ"][1])
+            
+    def start_rotating_loop(self):
+        self.continue_rotating = True
+        if self.continue_rotating:
+            Thread(target=self.rotate_cube).start()
+
+    def stop_rotating_loop(self):
+        self.continue_rotating = False
